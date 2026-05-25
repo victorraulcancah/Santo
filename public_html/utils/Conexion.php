@@ -5,7 +5,7 @@ class Conexion
 {
     private $servername = "localhost";
     private $username = "root";
-    private $password = "c4alab4az5%";
+    private $password = "";
     private $bd = "compuvision";
     private $conn;
 
