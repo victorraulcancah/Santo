@@ -5,7 +5,7 @@ ini_set('display_errors', '1');
 define("HOST_SS","localhost");
 define("DATABASE_SS","compuvision");
 define("USER_SS","root");
-define("PASSWORD_SS","c4alab4az5%");
+define("PASSWORD_SS","");
 
 class TableData { 
  	private $_db;

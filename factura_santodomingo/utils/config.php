@@ -6,7 +6,7 @@ define("DOMINIO","http://facturacion.com");
 define("HOST_SS","localhost");
 define("DATABASE_SS","santodomingo");
 define("USER_SS","root");
-define("PASSWORD_SS","c4p1cu4%");
+define("PASSWORD_SS","");
 
 /**
  * EMAILS_CONFIG
