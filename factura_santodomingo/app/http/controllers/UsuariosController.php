@@ -39,8 +39,6 @@
         public function update(Request $request) {
             $requestData = getVarsPost($_POST);
             $requestData->id_empresa = $_SESSION['id_empresa'];
-            /*console($requestData);
-            die();*/
             $result = $this->modelo->setTable('usuarios')
                 ->update(['usuario_id' => $request->usuario_id], $requestData);
             if ($result->estatus):

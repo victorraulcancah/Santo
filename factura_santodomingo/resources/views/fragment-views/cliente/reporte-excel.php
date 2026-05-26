@@ -2,7 +2,7 @@
 
     <thead>
         <tr>
-            <th style="text-align:center">Nº Registro</th>
+            <th style="text-align:center">No Registro</th>
             <th>Tipo Doc.</th>
             <th>Documento</th>
             <th>Fecha Registro</th>
@@ -16,7 +16,7 @@
             <th>Glosa</th>
             <th>Total Convertido</th>
             <th>E</th>
-            <th>Con Guía</th>
+            <th>Con Guia</th>
             <th>Vendedor</th>
             <th>Orden Compra</th>
             <th>Fecha Crea.</th>

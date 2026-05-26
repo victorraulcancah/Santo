@@ -13,14 +13,14 @@
 
     <table style="width:100%" class="table table-bordered dt-responsive nowrap text-center table-sm">
         <tr>
-            <th rowspan="3" colspan="1" style="text-align: center;font-size: 12px;">NUMERO DEL REGISTRO O CODIGO UNICO DE OPERACIÓN</th>
+            <th rowspan="3" colspan="1" style="text-align: center;font-size: 12px;">NUMERO DEL REGISTRO O CODIGO UNICO DE OPERACION</th>
 
             <th rowspan="2" colspan="5" style="text-align: center;font-size: 12px;">COMPROBANTE DE PAGO O DOCUMENTO</th>
 
             <th colspan="4" rowspan="1" style="text-align: center;font-size: 12px;">INFORMACION DEL CLIENTE</th>
             <th rowspan="3" style="text-align: center;font-size: 12px;">VALOR FACTURADO DE LA EXPORTACION</th>
-            <th rowspan="3" style="text-align: center;font-size: 12px;">BASE IMPONIBLE DE LA OPERACIÓN GRAVADA</th>
-            <th rowspan="2" colspan="2" style="text-align: center;font-size: 12px;">IMPORTE DE LA OPERACIÓN EXONERADA O INAFECTA</th>
+            <th rowspan="3" style="text-align: center;font-size: 12px;">BASE IMPONIBLE DE LA OPERACION GRAVADA</th>
+            <th rowspan="2" colspan="2" style="text-align: center;font-size: 12px;">IMPORTE DE LA OPERACION EXONERADA O INAFECTA</th>
             <th rowspan="3" colspan="2" style="text-align: center;font-size: 12px;">ISC</th>
             <th rowspan="3" colspan="2" style="text-align: center;font-size: 12px;">IGV Y/O IPM</th>
             <th rowspan="3" colspan="2" style="text-align: center;font-size: 12px;">OTROS TRIBUTOS Y CARGOS QUE NO FORMAN PARTE DE LA BASE IMPONIBLE</th>

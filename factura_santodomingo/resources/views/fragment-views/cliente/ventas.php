@@ -1,3 +1,4 @@
+<?php header('Content-Type: text/html; charset=utf-8'); ?>
 <!-- start page title -->
 
 <div class="page-title-box">
@@ -5,7 +6,7 @@
         <div class="col-md-8">
             <h6 class="page-title">Ventas</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturación</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturacion</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Ventas</li>
             </ol>
         </div>
@@ -88,11 +89,11 @@
                 <form id="pdf-generar-resporte-ventas-ganancia">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">Día</label>
+                            <label class="form-label">Dia</label>
                             <input type="text" name='dia' class='form-control' oninput="process(this)" maxlength="2">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">Año</label>
+                            <label class="form-label">Ano</label>
                             <select name="anio" class="form-control">
                                 <?php
                                 $anio = date("Y");
@@ -142,11 +143,11 @@
                 <form id="pdf-generar-resporte-ventas">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">Día</label>
+                            <label class="form-label">Dia</label>
                             <input type="text" name='dia' class='form-control' oninput="process(this)" maxlength="2">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">Año</label>
+                            <label class="form-label">Ano</label>
                             <select name="anio" class="form-control">
                                 <?php
                                 $anio = date("Y");
@@ -210,7 +211,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Código De Producto</label>
+                        <label class="form-label">Codigo De Producto</label>
                         <input required type="text" name="codprod" class="form-control" >
                     </div>
                     <div class="mb-3">
@@ -243,7 +244,7 @@
                 <form id="txt-generar-resporte-ventas">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Año</label>
+                            <label class="form-label">Ano</label>
                             <select name="anio" class="form-control">
                                 <?php
                                 $anio = date("Y");
@@ -290,7 +291,7 @@
                 <form id="pdf-generar-resporte-ventas-xls">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Año</label>
+                            <label class="form-label">Ano</label>
                             <select name="anioExcel" id='anioExcel' class="form-control">
                                 <?php
                                 $anio = date("Y");
@@ -338,7 +339,7 @@
                 <form id="pdf-generar-resporte-ventas-xls-rvta">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Año</label>
+                            <label class="form-label">Ano</label>
                             <select name="anioExcel" id='anioExcel22' class="form-control">
                                 <?php
                                 $anio = date("Y");
@@ -936,7 +937,7 @@
             console.log(iventa);
             Swal.fire({
                 title: 'Anular Venta',
-                text: "¿Esta seguro de ANULAR este documento?",
+                text: "Esta seguro de ANULAR este documento?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

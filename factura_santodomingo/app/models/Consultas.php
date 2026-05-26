@@ -73,13 +73,14 @@ class Consultas
     }
     function buscarProducto($id_empresa, $term, $alma)
     {
-        $sql = "SELECT * from productos 
-        where id_empresa = '12' 
-          and (descripcion like '%$term%' OR
-               codigo like '%$term%' OR 
-               serie_producto like '%$term%') and sucursal='{$_SESSION['sucursal']}' 
-          AND almacen = '$alma' and estado='1' order by descripcion asc limit 500";
-        //echo $sql;
+        $sql = "SELECT p.*, ud.nombre AS unidad_derivada_nombre
+        FROM productos p
+        LEFT JOIN unidades_derivadas ud ON p.id_unidad_derivada = ud.id_unidad
+        where p.id_empresa = '12'
+          and (p.descripcion like '%$term%' OR
+               p.codigo like '%$term%' OR
+               p.serie_producto like '%$term%') and p.sucursal='{$_SESSION['sucursal']}'
+          AND p.almacen = '$alma' and p.estado='1' order by p.descripcion asc limit 500";
 
         return $this->conectar->query($sql);
     }

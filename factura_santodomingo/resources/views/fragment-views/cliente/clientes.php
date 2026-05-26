@@ -28,6 +28,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
 
                     <div class="col-md-6 text-end">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#importarModal" class="btn btn-success"><i class="fa fa-file-excel"></i> Importar</button>
+                        <a href="<?= _URL ?>/ajs/clientes/exportar" target="_blank" class="btn btn-success"><i class="fa fa-file-excel"></i> Exportar</a>
                         <!-- <button class="btn btn-success"><i class="fa fa-file-excel"></i> Importar</button> -->
                     </div>
                 </div>
@@ -47,12 +48,16 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                                         <thead>
                                             <tr>
                                                 <th>Documento</th>
-                                                <th>Datos</th>
+                                                <th>Nombres/Razon Social</th>
                                                 <th>Direccion</th>
-                                                <th>Direccion 2</th>
-                                                <th>Telefono</th>
-                                                <th>Telefon 2</th>
+                                                <th>Direccion Llegada</th>
+                                                <th>Telefono 1</th>
+                                                <th>Telefono 2</th>
                                                 <th>Email</th>
+                                                <th>Departamento</th>
+                                                <th>Provincia</th>
+                                                <th>Distrito</th>
+                                                <th>Fecha Nacimiento</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbodyImportar">
@@ -66,6 +71,10 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                                                 <td>{{item.telefono}}</td>
                                                 <td>{{item.telefono2}}</td>
                                                 <td>{{item.email}}</td>
+                                                <td>{{item.departamento}}</td>
+                                                <td>{{item.provincia}}</td>
+                                                <td>{{item.distrito}}</td>
+                                                <td>{{item.fecha_nacimiento}}</td>
                                                
                                             </tr>
                                         </tbody>
@@ -93,7 +102,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                                         <div class="mb-3">
                                             <p>Descargue el modelo en <span class="fw-bold">EXCEL</span> para importar, no
                                                 modifique los campos en el archivo, <span class="fw-bold">click para
-                                                    descargar</span> <a href="<?= URL::to("public/templateExcelClientes.xlsx") ?>">template.xlsx</a></p>
+                                                    descargar</span> <a href="<?= URL::to("public/templateExcelClientes.xlsx") ?>?v=<?= time() ?>">template.xlsx</a></p>
                                         </div>
                                         <div class="mb-3">
                                             <label class="col-form-label">Importar Excel:</label>
@@ -134,20 +143,43 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
 
 
                                             <div class="col-md-6 mt-3">
-                                                <label for="direccionAgregar">Dirección</label>
+                                                <label for="direccionAgregar">Direccion</label>
                                                 <input type="text" class="form-control" id="direccionAgregar" name="direccionAgregar">
                                             </div>
                                             <div class="col-md-6 mt-3">
-                                                <label for="direccionAgregar2">Dirección de Llegada</label>
+                                                <label for="direccionAgregar2">Direccion de Llegada</label>
                                                 <input type="text" class="form-control" id="direccionAgregar2" name="direccionAgregar2">
                                             </div>
                                             <div class="col-md-6 mt-3">
-                                                <label for="telefonoAgregar">Teléfono</label>
+                                                <label for="telefonoAgregar">Telefono</label>
                                                 <input type="number" class="form-control" id="telefonoAgregar" name="telefonoAgregar">
                                             </div>
                                             <div class="col-md-6 mt-3">
-                                                <label for="telefonoAgregar2">Teléfono 2</label>
+                                                <label for="telefonoAgregar2">Telefono 2</label>
                                                 <input type="number" class="form-control" id="telefonoAgregar2" name="telefonoAgregar2">
+                                            </div>
+                                            
+                                            <div class="col-md-4 mt-3">
+                                                <label for="departamentoAgregar">Departamento</label>
+                                                <select class="form-control" id="departamentoAgregar" name="departamentoAgregar">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="provinciaAgregar">Provincia</label>
+                                                <select class="form-control" id="provinciaAgregar" name="provinciaAgregar">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="distritoAgregar">Distrito</label>
+                                                <select class="form-control" id="distritoAgregar" name="distritoAgregar">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="fecha_nacimientoAgregar">F. Nacimiento</label>
+                                                <input type="date" class="form-control" id="fecha_nacimientoAgregar" name="fecha_nacimientoAgregar">
                                             </div>
 
 
@@ -217,6 +249,28 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                                                 <label for="telefonoEditar2" class="col-form-label">Telefono 2</label>
                                                 <input type="number" class="form-control" id="telefonoEditar2" name="telefonoEditar2">
                                             </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="departamentoEditar" class="col-form-label">Departamento</label>
+                                                <select class="form-control" id="departamentoEditar" name="departamentoEditar">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="provinciaEditar" class="col-form-label">Provincia</label>
+                                                <select class="form-control" id="provinciaEditar" name="provinciaEditar">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="distritoEditar" class="col-form-label">Distrito</label>
+                                                <select class="form-control" id="distritoEditar" name="distritoEditar">
+                                                    <option value="">-- Seleccionar --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label for="fecha_nacimientoEditar" class="col-form-label">F. Nacimiento</label>
+                                                <input type="date" class="form-control" id="fecha_nacimientoEditar" name="fecha_nacimientoEditar">
+                                            </div>
 
                                             <div class="col-md-8 mt-3">
                                                 <label for="emailEditar" class="col-form-label">Email</label>
@@ -242,8 +296,13 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                                         <th>Item</th>
                                         <th>Documento</th>
                                         <th>Nombre/Razon Social</th>
+                                        <th>Direccion</th>
+                                        <th>Telefono</th>
                                         <th>Email</th>
-                                        <th>Télefono</th>
+                                        <th>Departamento</th>
+                                        <th>Provincia</th>
+                                        <th>Distrito</th>
+                                        <th>F. Nacimiento</th>
                                         <th>S/ Venta</th>
                                         <th>Ultima Venta</th>
                                         <th>Acciones</th>
@@ -325,7 +384,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                     class: "text-center",
                 },
                 {
-                    data: "email",
+                    data: "direccion",
                     class: "text-center",
                 },
                 {
@@ -333,11 +392,31 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                     class: "text-center",
                 },
                 {
-                    data: "ultima_venta",
+                    data: "email",
+                    class: "text-center",
+                },
+                {
+                    data: "departamento",
+                    class: "text-center",
+                },
+                {
+                    data: "provincia",
+                    class: "text-center",
+                },
+                {
+                    data: "distrito",
+                    class: "text-center",
+                },
+                {
+                    data: "fecha_nacimiento",
                     class: "text-center",
                 },
                 {
                     data: "total_venta",
+                    class: "text-center",
+                },
+                {
+                    data: "ultima_venta",
                     class: "text-center",
                 },
                 {
@@ -359,6 +438,11 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
         $("#nuevoCliente").click(function() {
             $("#loader-menor").show();
             let data = $("#frmClientesAgregar").serializeArray();
+            data.forEach(function(item) {
+                if (item.name == "departamentoAgregar") item.value = selectedText("#departamentoAgregar");
+                if (item.name == "provinciaAgregar") item.value = selectedText("#provinciaAgregar");
+                if (item.name == "distritoAgregar") item.value = selectedText("#distritoAgregar");
+            });
             $.ajax({
                 type: "POST",
                 url: _URL + "/ajs/clientes/add",
@@ -368,7 +452,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                     let data = JSON.parse(resp);
                     if (typeof data === "object") {
                         tabla_clientes.ajax.reload(null, false);
-                        Swal.fire("¡Buen trabajo!", "Registro Exitoso", "success");
+                        Swal.fire("Buen trabajo", "Registro Exitoso", "success");
                         $("#agregarModal").modal("hide");
                         $("body").removeClass("modal-open");
                         $("#frmClientesAgregar").trigger("reset");
@@ -412,7 +496,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                         console.log(resp);
                         $("#loader-menor").hide();
                         tabla_clientes.ajax.reload(null, false);
-                        Swal.fire("¡Buen trabajo!", "Registro Exitoso", "success");
+                        Swal.fire("Buen trabajo", "Registro Exitoso", "success");
                         $("#modal-lista-clientes").modal("hide");
                         $("body").removeClass("modal-open");
                     },
@@ -427,7 +511,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
             $("#editarModal").modal("show");
             $("#editarModal")
                 .find(".modal-title")
-                .text("Editar cliente N°" + id);
+                .text("Editar cliente No" + id);
             $.ajax({
                 url: _URL + "/ajs/clientes/getOne",
                 data: {
@@ -443,6 +527,22 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                     $("#datosEditar").val(datos.datos);
                     $("#direccionEditar").val(datos.direccion);
                     $("#direccionEditar2").val(datos.direccion2);
+                    var depCode = getCodeByText("#departamentoAgregar", datos.departamento) || datos.departamento;
+                    selectByText("#departamentoEditar", datos.departamento);
+                    $("#provinciaEditar").html('<option value="">-- Seleccionar --</option>');
+                    $("#distritoEditar").html('<option value="">-- Seleccionar --</option>');
+                    if (depCode) {
+                        cargarProvincias(depCode, "#provinciaEditar", function() {
+                            selectByText("#provinciaEditar", datos.provincia);
+                            var provCode = getCodeByText("#provinciaEditar", datos.provincia) || datos.provincia;
+                            if (provCode) {
+                                cargarDistritos(depCode, provCode, "#distritoEditar", function() {
+                                    selectByText("#distritoEditar", datos.distrito);
+                                });
+                            }
+                        });
+                    }
+                    $("#fecha_nacimientoEditar").val(datos.fecha_nacimiento);
                     $("#telefonoEditar").val(datos.telefono);
                     $("#telefonoEditar2").val(datos.telefono2);
                     $("#emailEditar").val(datos.email);
@@ -454,6 +554,11 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
         $("#updateCliente").click(function() {
             $("#loader-menor").show();
             let data = $("#clientesEditar").serializeArray();
+            data.forEach(function(item) {
+                if (item.name == "departamentoEditar") item.value = selectedText("#departamentoEditar");
+                if (item.name == "provinciaEditar") item.value = selectedText("#provinciaEditar");
+                if (item.name == "distritoEditar") item.value = selectedText("#distritoEditar");
+            });
             let id = $("#idCliente").val();
             let idData = {
                 name: "idPre",
@@ -469,7 +574,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                     console.log(resp);
                     if (Array.isArray(data)) {
                         tabla_clientes.ajax.reload(null, false);
-                        Swal.fire("¡Buen trabajo!", "Actualización exitosa", "success");
+                        Swal.fire("Buen trabajo", "Actualizacion exitosa", "success");
                         $("#editarModal").modal("hide");
                         $("body").removeClass("modal-open");
                     } else {
@@ -489,7 +594,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                 value: id,
             };
             Swal.fire({
-                title: "¿Deseas borrar el registro?",
+                title: "Deseas borrar el registro?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -505,7 +610,7 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                             /* console.log(resp); */
                             tabla_clientes.ajax.reload(null, false);
                             Swal.fire(
-                                "¡Buen trabajo!",
+                                "Buen trabajo",
                                 "Registro Borrado Exitosamente",
                                 "success"
                             );
@@ -612,6 +717,102 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
 
 
 
+        function cargarDepartamentos(selectId) {
+            $.post(_URL + "/ajs/consulta/lista/departamentos", function(resp) {
+                let data = JSON.parse(resp);
+                let select = $(selectId);
+                select.find("option:not(:first)").remove();
+                data.forEach(function(item) {
+                    select.append($("<option>").val(item.departamento).text(item.nombre));
+                });
+            });
+        }
+
+        function cargarProvincias(departamento, selectId) {
+            if (!departamento) {
+                $(selectId).html('<option value="">-- Seleccionar --</option>');
+                return;
+            }
+            $.post(_URL + "/ajs/consulta/lista/provincias", { departamento: departamento }, function(resp) {
+                let data = JSON.parse(resp);
+                let select = $(selectId);
+                select.find("option:not(:first)").remove();
+                data.forEach(function(item) {
+                    select.append($("<option>").val(item.provincia).text(item.nombre));
+                });
+            });
+        }
+
+        function cargarDistritos(departamento, provincia, selectId) {
+            if (!departamento || !provincia) {
+                $(selectId).html('<option value="">-- Seleccionar --</option>');
+                return;
+            }
+            $.post(_URL + "/ajs/consulta/lista/distrito", { departamento: departamento, provincia: provincia }, function(resp) {
+                let data = JSON.parse(resp);
+                let select = $(selectId);
+                select.find("option:not(:first)").remove();
+                data.forEach(function(item) {
+                    select.append($("<option>").val(item.ubigeo).text(item.nombre));
+                });
+            });
+        }
+
+        function selectedText(selectId) {
+            return $(selectId + " option:selected").text();
+        }
+
+        function selectByText(selectId, text) {
+            $(selectId + " option").each(function() {
+                if ($(this).text() == text) {
+                    $(selectId).val($(this).val());
+                    return false;
+                }
+            });
+        }
+
+        function getCodeByText(selectId, text) {
+            var code = "";
+            $(selectId + " option").each(function() {
+                if ($(this).text() == text) {
+                    code = $(this).val();
+                    return false;
+                }
+            });
+            return code;
+        }
+
+        cargarDepartamentos("#departamentoAgregar");
+        cargarDepartamentos("#departamentoEditar");
+
+        $("#departamentoAgregar").change(function() {
+            var dep = $(this).val();
+            $("#provinciaAgregar").html('<option value="">-- Seleccionar --</option>');
+            $("#distritoAgregar").html('<option value="">-- Seleccionar --</option>');
+            cargarProvincias(dep, "#provinciaAgregar");
+        });
+
+        $("#provinciaAgregar").change(function() {
+            var dep = $("#departamentoAgregar").val();
+            var prov = $(this).val();
+            $("#distritoAgregar").html('<option value="">-- Seleccionar --</option>');
+            cargarDistritos(dep, prov, "#distritoAgregar");
+        });
+
+        $("#departamentoEditar").change(function() {
+            var dep = $(this).val();
+            $("#provinciaEditar").html('<option value="">-- Seleccionar --</option>');
+            $("#distritoEditar").html('<option value="">-- Seleccionar --</option>');
+            cargarProvincias(dep, "#provinciaEditar");
+        });
+
+        $("#provinciaEditar").change(function() {
+            var dep = $("#departamentoEditar").val();
+            var prov = $(this).val();
+            $("#distritoEditar").html('<option value="">-- Seleccionar --</option>');
+            cargarDistritos(dep, prov, "#distritoEditar");
+        });
+
         $("#nuevoExcel").change(function() {
             console.log("aaaaaaaa")
             if ($("#nuevoExcel").val().length > 0) {
@@ -650,6 +851,10 @@ $c_cliente->setIdEmpresa($_SESSION['id_empresa']);
                                         telefono: el[4],
                                         telefono2: el[5],
                                         email: el[6],
+                                        departamento: el[7],
+                                        provincia: el[8],
+                                        distrito: el[9],
+                                        fecha_nacimiento: el[10],
                                         /* codSunat: el[8],
                                         almacen: el[9],
                                         afecto: false,

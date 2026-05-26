@@ -160,7 +160,7 @@
             $("#modalDetalle").modal("show");
             $("#modalDetalle")
                 .find(".modal-title")
-                .text("Detelle compra N°" + id);
+                .text("Detelle compra No" + id);
             $.ajax({
                 type: 'POST',
                 url: _URL + '/ajas/compra/detalle',

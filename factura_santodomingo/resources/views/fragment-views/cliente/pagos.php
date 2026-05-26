@@ -284,7 +284,7 @@
             $("#exampleModal").modal("show");
             $("#exampleModal")
                 .find(".modal-title")
-                .text("Detalles compra N° " + id);
+                .text("Detalles compra No " + id);
             $.ajax({
                 url: _URL + "/ajas/getAllCuotas/byIdCompra",
                 data: {
@@ -391,7 +391,7 @@
             var id = $(this).data("id");
 		var tipo = 'c';
             Swal.fire({
-                title: '¿Desea pagar la cuota N° ' + id + ' ? ',
+                title: 'Desea pagar la cuota No ' + id + ' ? ',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

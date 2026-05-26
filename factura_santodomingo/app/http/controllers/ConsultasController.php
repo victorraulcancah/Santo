@@ -609,6 +609,12 @@ WHERE pv.id_venta = '{$row['id_venta']}' ";
         echo $c_ubigeo->verDistritos();
     }
 
+    public function listarDepartamentos()
+    {
+        $c_ubigeo = new Ubigeo();
+        echo $c_ubigeo->verDepartamentos();
+    }
+
     public function listarProvincias()
     {
         $c_ubigeo = new Ubigeo();
@@ -665,9 +671,13 @@ WHERE pv.id_venta = '{$row['id_venta']}' ";
             $fila['precio4'] = $value['precio4'];
             $fila['precio_unidad'] = floatval($value['precio_unidad']);
             $fila['serie_producto'] = $value['serie_producto'];
-	    
+            $fila['unidades_por_caja'] = intval($value['unidades_por_caja'] ?? 1);
+            $fila['volumen_unidad'] = $value['volumen_unidad'] ?? '';
+            $fila['id_unidad_derivada'] = $value['id_unidad_derivada'] ?? null;
+            $fila['unidad_derivada_nombre'] = $value['unidad_derivada_nombre'] ?? '';
+
             array_push($array_resultado, $fila);
-	    
+
         }
 
         return json_encode($array_resultado);
@@ -696,9 +706,13 @@ WHERE pv.id_venta = '{$row['id_venta']}' ";
             $fila['precio4'] = $value['precio4'];
             $fila['precio_unidad'] = floatval($value['precio_unidad']);
             $fila['serie_producto'] = $value['serie_producto'];
+            $fila['unidades_por_caja'] = intval($value['unidades_por_caja'] ?? 1);
+            $fila['volumen_unidad'] = $value['volumen_unidad'] ?? '';
+            $fila['id_unidad_derivada'] = $value['id_unidad_derivada'] ?? null;
+            $fila['unidad_derivada_nombre'] = $value['unidad_derivada_nombre'] ?? '';
 	    if ($value['cantidad']>0) {
             array_push($array_resultado, $fila);
-	    }    
+	    }
         }
 
         return json_encode($array_resultado);

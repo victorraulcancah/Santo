@@ -257,7 +257,7 @@ if ($orrr = $conexion->query($sql)->fetch_assoc()) {
                     data.hora = getTime();
 
                     Swal.fire({
-                        title: '¿Desea cerrar la caja?',
+                        title: 'Desea cerrar la caja?',
                         showDenyButton: false,
                         showCancelButton: true,
                         confirmButtonText: 'Cerrar Caja',

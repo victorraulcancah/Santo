@@ -100,6 +100,10 @@
             return $this->view("fragment-views/cliente/almacen-productos");
         }
 
+        public function almacenUnidadesDerivadas() {
+            return $this->view("fragment-views/cliente/almacen-unidades-derivadas");
+        }
+
         public function almacenIntercambioProductos() {
             return $this->view("fragment-views/cliente/intercambio-productos");
         }
@@ -110,6 +114,10 @@
 
         public function usuarios() {
             return $this->view("fragment-views/cliente/usuarios");
+        }
+
+        public function pagosVendedores() {
+            return $this->view("fragment-views/admin/pagos-vendedores");
         }
 
         public function proveedoresLista() {

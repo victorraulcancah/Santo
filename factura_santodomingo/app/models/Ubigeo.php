@@ -103,7 +103,12 @@ class Ubigeo
         from ubigeo_inei 
         where provincia = '00'  and distrito = '00' 
         order by nombre asc ";
-        return $this->conectar->query($sql);
+        $result = $this->conectar->query($sql);
+        $lista=[];
+        foreach ($result as $row){
+            $lista[]=$row;
+        }
+        return json_encode($lista);
     }
 
     public function verProvincias()

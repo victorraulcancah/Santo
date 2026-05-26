@@ -75,7 +75,7 @@ $listaNE = $conexion->query($sql);
         <div class="card">
             <div class="card-body">
 
-                <h4 class="card-title">Guías Remisión <i class="fas fa-sync"></i></h4>
+                <h4 class="card-title">Guias Remision <i class="fas fa-sync"></i></h4>
                 <table id="table-guias" class="table table-bordered dt-responsive nowrap text-center table-sm table-hover">
                     <thead>
                     <tr>
@@ -414,7 +414,7 @@ $listaNE = $conexion->query($sql);
             const venta= $(evt.currentTarget).data("venta")
             console.log(venta);
             Swal.fire({
-                title: '¿Quieres Generar de nuevo el XML?',
+                title: 'Quieres Generar de nuevo el XML?',
                 showDenyButton: false,
                 showCancelButton: true,
                 confirmButtonText: 'Continuar',

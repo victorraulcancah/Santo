@@ -44,9 +44,9 @@ $c_producto->setIdEmpresa($_SESSION['id_empresa']);
 		<div class="card card-default">
 			<div class="card-body">
 				<div class="alert alert-warning" role="alert">
-					<strong>ALERTA DE ACTUALIZACION!</strong> a partir del año 2021, sunat exige el codigo SUNAT (Codigo
-					de productos y servicios estándar de las Naciones Unidas - UNSPSC v14_0801, a que hace referencia el
-					catálogo N° 25 del Anexo V de la Resolución de Superintendencia N° 340-2017/SUNAT y
+					<strong>ALERTA DE ACTUALIZACION!</strong> a partir del ano 2021, sunat exige el codigo SUNAT (Codigo
+					de productos y servicios estandar de las Naciones Unidas - UNSPSC v14_0801, a que hace referencia el
+					catalogo No 25 del Anexo V de la Resolucion de Superintendencia No 340-2017/SUNAT y
 					modificatorias.). Modifique el valor en Productos
 				</div>
 			</div>
@@ -238,19 +238,66 @@ foreach ($a_productos as $fila) {
 							</div>
 
 							<div class="form-group col-md-3 mt-2">
-								<label>Precio Venta</label>
+								<label>
+									Precio Venta
+									<span v-if="reg.id_unidad_derivada" class="text-info">
+										(por {{ nombreUnidadDerivada(reg.id_unidad_derivada) }})
+									</span>
+								</label>
 								<input v-model="reg.precio" @keypress="onlyNumber" required value="0" type="text"
 									class="form-control">
+								<small v-if="reg.id_unidad_derivada && reg.unidades_por_caja > 1 && reg.precio > 0"
+									class="form-text text-muted">
+									= {{(reg.precio / reg.unidades_por_caja).toFixed(4)}} por unidad
+								</small>
 							</div>
 							<div class="form-group col-md-3 mt-2">
-								<label>Costo</label>
+								<label>
+									Costo
+									<span v-if="reg.id_unidad_derivada" class="text-info">
+										(por {{ nombreUnidadDerivada(reg.id_unidad_derivada) }})
+									</span>
+								</label>
 								<input v-model="reg.costo" @keypress="onlyNumber" required value="0" type="text"
 									class="form-control">
+								<small v-if="reg.id_unidad_derivada && reg.unidades_por_caja > 1 && reg.costo > 0"
+									class="form-text text-muted">
+									= {{(reg.costo / reg.unidades_por_caja).toFixed(4)}} por unidad
+								</small>
 							</div>
 							<div class="form-group col-md-3 mt-2">
 								<label>Cantidad</label>
 								<input v-model="reg.cantidad" @keypress="onlyNumber" required type="text"
 									class="form-control">
+								<small class="form-text text-muted">Stock en unidades base</small>
+							</div>
+							<div class="form-group col-md-3 mt-2">
+								<label>Unidad Derivada</label>
+								<div class="input-group">
+									<select v-model="reg.id_unidad_derivada" class="form-control">
+										<option :value="null">-- Solo unidad --</option>
+										<option v-for="item in listaUnidades" :value="item.id_unidad" :key="item.id_unidad">
+											{{ item.nombre }}
+										</option>
+									</select>
+									<button type="button" @click="abrirNuevaUnidad" class="btn btn-primary">
+										<i class="fa fa-plus"></i>
+									</button>
+								</div>
+								<small class="form-text text-muted">Caja, Docena, Pack, etc.</small>
+							</div>
+							<div class="form-group col-md-2 mt-2">
+								<label>Multiplicador</label>
+								<input v-model="reg.unidades_por_caja" @keypress="onlyNumber" type="text"
+									class="form-control" placeholder="1"
+									:disabled="!reg.id_unidad_derivada">
+								<small class="form-text text-muted">Unid. por caja</small>
+							</div>
+							<div class="form-group col-md-2 mt-2">
+								<label>Volumen Unidad</label>
+								<input v-model="reg.volumen_unidad" type="text" class="form-control"
+									placeholder="Ej: 1L, 500ml">
+								<small class="form-text text-muted">Decorativo</small>
 							</div>
 							<div class="form-group col-md-5 mt-2">
 								<label>Categoria</label>
@@ -350,6 +397,35 @@ foreach ($a_productos as $fila) {
 		</div>
 	</div>
 
+	<!-- Modal Nueva Unidad Derivada -->
+	<div class="modal fade" id="modal-nueva-unidad" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Nueva Unidad Derivada</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form @submit.prevent="guardarNuevaUnidad">
+					<div class="modal-body">
+						<div class="form-group mb-3">
+							<label>Nombre <span class="text-danger">*</span></label>
+							<input v-model="nuevaUnidad.nombre" required type="text" class="form-control"
+								placeholder="Ej: Caja, Docena, Pack">
+						</div>
+						<div class="form-group">
+							<label>Descripcion</label>
+							<input v-model="nuevaUnidad.descripcion" type="text" class="form-control" placeholder="Opcional">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Guardar</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<div class="modal fade" id="modal-edt-prod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content">
@@ -374,14 +450,32 @@ foreach ($a_productos as $fila) {
 								<input v-model="edt.serie_producto" required type="text" class="form-control">
 							</div>
 							<div class="form-group col-md-4 mt-2">
-								<label>Precio Venta</label>
+								<label>
+									Precio Venta
+									<span v-if="edt.id_unidad_derivada" class="text-info">
+										(por {{ nombreUnidadDerivada(edt.id_unidad_derivada) }})
+									</span>
+								</label>
 								<input v-model="edt.precio" @keypress="onlyNumber" required value="0" type="text"
 									class="form-control">
+								<small v-if="edt.id_unidad_derivada && edt.unidades_por_caja > 1 && edt.precio > 0"
+									class="form-text text-muted">
+									= {{(edt.precio / edt.unidades_por_caja).toFixed(4)}} por unidad
+								</small>
 							</div>
 							<div class="form-group col-md-4 mt-2">
-								<label>Costo</label>
+								<label>
+									Costo
+									<span v-if="edt.id_unidad_derivada" class="text-info">
+										(por {{ nombreUnidadDerivada(edt.id_unidad_derivada) }})
+									</span>
+								</label>
 								<input v-model="edt.costo" @keypress="onlyNumber" required value="0" type="text"
 									class="form-control">
+								<small v-if="edt.id_unidad_derivada && edt.unidades_por_caja > 1 && edt.costo > 0"
+									class="form-text text-muted">
+									= {{(edt.costo / edt.unidades_por_caja).toFixed(4)}} por unidad
+								</small>
 							</div>
 							<div class="form-group col-md-12 mt-2">
 								<label>Categoria</label>
@@ -425,6 +519,35 @@ foreach ($a_productos as $fila) {
 							<div class="form-group col-md-4 mt-2">
 								<label>Cantidad</label>
 								<input type="text" style="background-color: #d2d6de;" v-model="edt.cantidad" @keypress="onlyNumber" value="0" class="form-control" disabled>
+								<small class="form-text text-muted">Stock en unidades base</small>
+							</div>
+							<div class="form-group col-md-4 mt-2">
+								<label>Unidad Derivada</label>
+								<div class="input-group">
+									<select v-model="edt.id_unidad_derivada" class="form-control">
+										<option :value="null">-- Solo unidad --</option>
+										<option v-for="item in listaUnidades" :value="item.id_unidad" :key="item.id_unidad">
+											{{ item.nombre }}
+										</option>
+									</select>
+									<button type="button" @click="abrirNuevaUnidad" class="btn btn-primary">
+										<i class="fa fa-plus"></i>
+									</button>
+								</div>
+								<small class="form-text text-muted">Caja, Docena, Pack...</small>
+							</div>
+							<div class="form-group col-md-4 mt-2">
+								<label>Multiplicador</label>
+								<input v-model="edt.unidades_por_caja" @keypress="onlyNumber" type="text"
+									class="form-control" placeholder="1"
+									:disabled="!edt.id_unidad_derivada">
+								<small class="form-text text-muted">Unid. por caja</small>
+							</div>
+							<div class="form-group col-md-4 mt-2">
+								<label>Volumen Unidad</label>
+								<input v-model="edt.volumen_unidad" type="text" class="form-control"
+									placeholder="Ej: 1L, 500ml">
+								<small class="form-text text-muted">Decorativo</small>
 							</div>
 							<div class="form-group col-md-12">
 								<div class="row">
@@ -619,7 +742,7 @@ foreach ($a_productos as $fila) {
 			</div>
 			<div class="modal-body">
 				<div class="col-md-12 mb-3">
-					<label class="form-label">AÃ±o</label>
+					<label class="form-label">AA±o</label>
 					<select id='anioreporEFG' class="form-control">
 						<?php
 						$anio = date("Y");
@@ -781,19 +904,19 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 			// Conectar a la impresora
 			await printer.connect();
 
-			// Configurar el tamaÃ±o del ticket (50 mm x 25 mm)
+			// Configurar el tamaA±o del ticket (50 mm x 25 mm)
 			await printer.setPageFormat(50, 25);
 
-			// Imprimir el tÃ­tulo
+			// Imprimir el tA­tulo
 			await printer.printText('Barcode Title\n');
 
-			// Generar el cÃ³digo de barras utilizando JsBarcode
+			// Generar el cA³digo de barras utilizando JsBarcode
 			const svgData = JsBarcode.generateSvg('123456789', {
 				format: 'CODE128',
 				displayValue: true,
 			});
 
-			// Imprimir el cÃ³digo de barras
+			// Imprimir el cA³digo de barras
 			await printer.printImage(svgData);
 
 			// Cortar el ticket
@@ -831,7 +954,7 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 		/* let imgCodigo = $('#idCodigoBarras').attr('src');
         let ticketContent = `
         <html>
-        <head><title>Ticket de impresiÃ³n</title></head>
+        <head><title>Ticket de impresiA³n</title></head>
         <body style="width: 5cm; height: 2.5cm; padding: 0; margin: 0;">
           <h3 style="font-size: 12px;text-align: center; margin: 0; padding: 0;">"+nombreBarraTemps+"</h3>
           <img src="${imgCodigo}" style="width: 100%; height: calc(100% - 1em); display: block; margin: 0 auto;">
@@ -896,6 +1019,9 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 					precioMenor: '',
 					codigo: '',
 					almacen: 1,
+					unidades_por_caja: '1',
+					volumen_unidad: '',
+					id_unidad_derivada: null,
 				},
 				edt: {
 					cod_prod: '',
@@ -915,8 +1041,13 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 					precio4: '',
 					precio_unidad: '',
 					codigo: '',
-					cantidad: ''
+					cantidad: '',
+					unidades_por_caja: '1',
+					volumen_unidad: '',
+					id_unidad_derivada: null,
 				},
+				listaUnidades: [],
+				nuevaUnidad: { nombre: '', descripcion: '' },
 				listaIdsss: [],
 				listaCatego: [],
 				listaAlmacenes: [],
@@ -924,6 +1055,43 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 				addcatego: ''
 			},
 			methods: {
+				nombreUnidadDerivada(id) {
+					if (!id) return '';
+					const u = this.listaUnidades.find(x => parseInt(x.id_unidad) === parseInt(id));
+					return u ? u.nombre : '';
+				},
+				cargarUnidadesDerivadas() {
+					const self = this;
+					_ajax("/ajs/unidades-derivadas/listar", "POST", {}, function(resp) {
+						if (resp.res) self.listaUnidades = resp.data;
+					});
+				},
+				abrirNuevaUnidad() {
+					this.nuevaUnidad = { nombre: '', descripcion: '' };
+					$("#modal-nueva-unidad").modal("show");
+				},
+				guardarNuevaUnidad() {
+					if (!this.nuevaUnidad.nombre.trim()) return;
+					const self = this;
+					_ajax("/ajs/unidades-derivadas/add", "POST", this.nuevaUnidad, function(resp) {
+						if (resp.res) {
+							$("#modal-nueva-unidad").modal("hide");
+							self.cargarUnidadesDerivadas();
+							// auto-seleccionar la unidad recien creada en el form activo
+							self.$nextTick(() => {
+								if ($("#modal-add-prod").hasClass("show")) {
+									self.reg.id_unidad_derivada = resp.id_unidad;
+								}
+								if ($("#modal-edt-prod").hasClass("show")) {
+									self.edt.id_unidad_derivada = resp.id_unidad;
+								}
+							});
+							alertExito("Unidad creada");
+						} else {
+							alertAdvertencia(resp.error || "No se pudo crear");
+						}
+					});
+				},
 				AggCatego() {
 					this.addcatego = "";
 					$("#modal-categoria").modal("show")
@@ -1253,7 +1421,7 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 					} else if (this.edt.ruc.length == 11) {
 						this.getInfoDoc3();
 					} else {
-						alertAdvertencia("El RUC es de 11 dÃ­gitos")
+						alertAdvertencia("El RUC es de 11 dA­gitos")
 					}
 				},
 				getInfoDoc2() {
@@ -1371,7 +1539,7 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 					console.log("🚀 ~ file: almacen-productos.php:1150 ~ agregarProd data: ", data);
 
 					$.ajax({
-						url: "https://magustechnologies.com/factura_santodomingo/ajs/data/producto/add",
+						url: _URL + "/ajs/data/producto/add",
 						type: "POST",
 						data: data,
 						dataType: "json", // Fuerza a jQuery a interpretar la respuesta como JSON
@@ -1390,11 +1558,11 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 							}
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
-							// Si el servidor devuelve un error 500, aquí podrás ver el mensaje real
-							console.error("Error técnico detectado:", textStatus, errorThrown);
+							// Si el servidor devuelve un error 500, aqui podras ver el mensaje real
+							console.error("Error tecnico detectado:", textStatus, errorThrown);
 							console.log("Cuerpo de la respuesta fallida:", jqXHR.responseText);
 
-							alertAdvertencia("Error crítico del servidor. Revisa la consola para más detalles.");
+							alertAdvertencia("Error critico del servidor. Revisa la consola para mas detalles.");
 						}
 					});
 				},
@@ -1416,6 +1584,9 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 					this.edt.codigo = data.codigo
 					this.edt.cantidad = data.cantidad
 					this.edt.serie_producto = data.serie_producto
+					this.edt.unidades_por_caja = data.unidades_por_caja ?? '1'
+					this.edt.volumen_unidad = data.volumen_unidad ?? ''
+					this.edt.id_unidad_derivada = data.id_unidad_derivada ? parseInt(data.id_unidad_derivada) : null
 
 				},
 				onlyNumber($event) {
@@ -1571,6 +1742,7 @@ https://cdn.jsdelivr.net/npm/@pokusew/escpos@3.0.8/dist/index.min.js
 		})
 
 		app.getCategoliasList();
+		app.cargarUnidadesDerivadas();
 		app.getAllAlmacenes();
 		app.getCosto();
 		var arrayIdsOkUsar = []

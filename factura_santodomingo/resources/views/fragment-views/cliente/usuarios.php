@@ -62,14 +62,14 @@
                                             <th>ID</th>
                                             <th>Empresa</th>
                                             <th>Rol</th>
-                                            <th>Número de Documento</th>
+                                            <th>Numero de Documento</th>
                                             <th>Usuario</th>
                                             <th>Email</th>
                                             <th>Nombres</th>
                                             <th>Apellidos</th>
                                             <th>Rubro</th>
                                             <th>Sucursal</th>
-                                            <th>Teléfono</th>
+                                            <th>Telefono</th>
                                             <th>Token de Reset</th>
                                             <th>Estado</th>
                                             <th>Mensaje</th>
@@ -203,7 +203,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="telefonoAgregar">Teléfono</label>
+                                                <label for="telefonoAgregar">Telefono</label>
                                                 <input type="number" class="form-control" id="telefonoAgregar"
                                                        name="telefono">
                                             </div>
@@ -213,10 +213,41 @@
                                                        name="email">
                                             </div>
                                             <div class="col-md-12 mt-3">
-                                                <label for="direccionAgregar">Dirección</label>
+                                                <label for="direccionAgregar">Direccion</label>
                                                 <input type="text" class="form-control" id="direccionAgregar"
                                                        name="direccion">
                                             </div>
+                                            <!-- Inicio Esquema de Pago -->
+                                            <div class="col-md-12 mt-3">
+                                                <hr>
+                                                <h6>Esquema de Pago</h6>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label>Tipo de Sueldo Base</label>
+                                                <select class="form-select esquema-tipo-sueldo" id="tipo_sueldoAgregar" name="tipo_sueldo" data-target="Agregar">
+                                                    <option value="1">Sueldo Fijo</option>
+                                                    <option value="2">Sueldo por Comision (%)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 form-group campo-sueldo-fijo-Agregar">
+                                                <label>Monto Sueldo Fijo (S/)</label>
+                                                <input type="number" step="0.01" class="form-control" id="monto_sueldo_fijoAgregar" name="monto_sueldo_fijo" value="0.00">
+                                            </div>
+                                            <div class="col-md-4 form-group campo-sueldo-comision-Agregar" style="display:none;">
+                                                <label>Porcentaje Comision (%)</label>
+                                                <input type="number" step="0.01" class="form-control" id="porcentaje_sueldo_comisionAgregar" name="porcentaje_sueldo_comision" value="0.00">
+                                            </div>
+                                            <div class="col-md-6 form-group mt-2">
+                                                <label>Meta Ventas para Bono Extra (S/)</label>
+                                                <input type="number" step="0.01" class="form-control esquema-meta" id="meta_ventasAgregar" name="meta_ventas" value="0.00" data-target="Agregar">
+                                                <small class="form-text text-muted">0 = sin meta, no aplica bono</small>
+                                            </div>
+                                            <div class="col-md-6 form-group mt-2 campo-bono-Agregar" style="display:none;">
+                                                <label>Porcentaje Bono Extra (%)</label>
+                                                <input type="number" step="0.01" class="form-control" id="porcentaje_comision_metaAgregar" name="porcentaje_comision_meta" value="0.00">
+                                                <small class="form-text text-muted">Se aplica sobre el EXCEDENTE de la meta</small>
+                                            </div>
+                                            <!-- Fin Esquema de Pago -->
                                         </div>
 
                                     </form>
@@ -299,6 +330,38 @@
                                                 <input type="number" class="form-control" id="telefonoEditar"
                                                        name="telefono">
                                             </div>
+
+                                            <!-- Inicio Esquema de Pago Editar -->
+                                            <div class="col-md-12 mt-3">
+                                                <hr>
+                                                <h6>Esquema de Pago</h6>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label>Tipo de Sueldo Base</label>
+                                                <select class="form-select esquema-tipo-sueldo" id="tipo_sueldoEditar" name="tipo_sueldo" data-target="Editar">
+                                                    <option value="1">Sueldo Fijo</option>
+                                                    <option value="2">Sueldo por Comision (%)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 form-group campo-sueldo-fijo-Editar">
+                                                <label>Monto Sueldo Fijo (S/)</label>
+                                                <input type="number" step="0.01" class="form-control" id="monto_sueldo_fijoEditar" name="monto_sueldo_fijo" value="0.00">
+                                            </div>
+                                            <div class="col-md-4 form-group campo-sueldo-comision-Editar" style="display:none;">
+                                                <label>Porcentaje Comision (%)</label>
+                                                <input type="number" step="0.01" class="form-control" id="porcentaje_sueldo_comisionEditar" name="porcentaje_sueldo_comision" value="0.00">
+                                            </div>
+                                            <div class="col-md-6 form-group mt-2">
+                                                <label>Meta Ventas para Bono Extra (S/)</label>
+                                                <input type="number" step="0.01" class="form-control esquema-meta" id="meta_ventasEditar" name="meta_ventas" value="0.00" data-target="Editar">
+                                                <small class="form-text text-muted">0 = sin meta, no aplica bono</small>
+                                            </div>
+                                            <div class="col-md-6 form-group mt-2 campo-bono-Editar" style="display:none;">
+                                                <label>Porcentaje Bono Extra (%)</label>
+                                                <input type="number" step="0.01" class="form-control" id="porcentaje_comision_metaEditar" name="porcentaje_comision_meta" value="0.00">
+                                                <small class="form-text text-muted">Se aplica sobre el EXCEDENTE de la meta</small>
+                                            </div>
+                                            <!-- Fin Esquema de Pago Editar -->
                                         </div>
 
                                     </form>
@@ -325,7 +388,7 @@
                                     <th>Apellidos</th>
                                     <th>Rubro</th>
                                     <!--<th>Sucursal</th>-->
-                                    <th>Teléfono</th>
+                                    <th>Telefono</th>
                                     <th>Creado</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -498,7 +561,7 @@
 					let data = JSON.parse(resp);
 					if (typeof data === "object") {
 						tabla_usuarios.ajax.reload(null, false);
-						Swal.fire("¡Buen trabajo!", "Registro Exitoso", "success");
+						Swal.fire("Buen trabajo!", "Registro Exitoso", "success");
 						$("#agregarModal").modal("hide");
 						$("body").removeClass("modal-open");
 						$("#frmClientesAgregar").trigger("reset");
@@ -521,7 +584,7 @@
 			$("#editarModal").modal("show");
 			$("#editarModal")
 				.find(".modal-title")
-				.text("Editar Usuario N°" + id);
+				.text("Editar Usuario No" + id);
 			$.ajax({
 				url: _URL + "/ajs/usuarios/get",
 				data: {
@@ -540,6 +603,12 @@
 					$("#apellidosEditar").val(datos.apellidos);
 					$("#num_docEditar").val(datos.num_doc);
 					$("#telefonoEditar").val(datos.telefono);
+					
+					$("#tipo_sueldoEditar").val(datos.tipo_sueldo || 1);
+					$("#monto_sueldo_fijoEditar").val(datos.monto_sueldo_fijo || 0);
+					$("#porcentaje_sueldo_comisionEditar").val(datos.porcentaje_sueldo_comision || 0);
+					$("#meta_ventasEditar").val(datos.meta_ventas || 0);
+					$("#porcentaje_comision_metaEditar").val(datos.porcentaje_comision_meta || 0);
 
 					$("#id_rolEditar").prop("selectedIndex", (datos.id_rol - 1));
 
@@ -568,7 +637,7 @@
 					console.log(data);
 					if (Array.isArray(data)) {
 						tabla_usuarios.ajax.reload(null, false);
-						Swal.fire("¡Buen trabajo!", "Actualización exitosa", "success");
+						Swal.fire("Buen trabajo!", "Actualizacion exitosa", "success");
 						$("#editarModal").modal("hide");
 						$("body").removeClass("modal-open");
 					} else {
@@ -588,7 +657,7 @@
 				id: id,
 			};
 			Swal.fire({
-				title: "¿Deseas borrar el registro?",
+				title: "Deseas borrar el registro?",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
@@ -604,7 +673,7 @@
 							/* console.log(resp); */
 							tabla_usuarios.ajax.reload(null, false);
 							Swal.fire(
-								"¡Buen trabajo!",
+								"Buen trabajo!",
 								"Registro Borrado Exitosamente",
 								"success"
 							);
@@ -764,6 +833,42 @@
 				})
 			}
 		})
+
+		// === UX: ocultar/mostrar campos segun tipo de sueldo y meta ===
+		function aplicarVisibilidadEsquema(sufijo) {
+			const tipo = $("#tipo_sueldo" + sufijo).val();
+			if (tipo == "1") {
+				$(".campo-sueldo-fijo-" + sufijo).show();
+				$(".campo-sueldo-comision-" + sufijo).hide();
+				$("#porcentaje_sueldo_comision" + sufijo).val(0);
+			} else {
+				$(".campo-sueldo-fijo-" + sufijo).hide();
+				$(".campo-sueldo-comision-" + sufijo).show();
+				$("#monto_sueldo_fijo" + sufijo).val(0);
+			}
+			const meta = parseFloat($("#meta_ventas" + sufijo).val() || 0);
+			if (meta > 0) {
+				$(".campo-bono-" + sufijo).show();
+			} else {
+				$(".campo-bono-" + sufijo).hide();
+				$("#porcentaje_comision_meta" + sufijo).val(0);
+			}
+		}
+
+		$(document).on("change", ".esquema-tipo-sueldo", function () {
+			aplicarVisibilidadEsquema($(this).data("target"));
+		});
+		$(document).on("input change", ".esquema-meta", function () {
+			aplicarVisibilidadEsquema($(this).data("target"));
+		});
+
+		$("#editarModal").on("shown.bs.modal", function () {
+			setTimeout(function () { aplicarVisibilidadEsquema("Editar"); }, 50);
+		});
+		$("#nuevoModal, #agregarModal").on("shown.bs.modal", function () {
+			aplicarVisibilidadEsquema("Agregar");
+		});
+		aplicarVisibilidadEsquema("Agregar");
 
 	});
 </script>

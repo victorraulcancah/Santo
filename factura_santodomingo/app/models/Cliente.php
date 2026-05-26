@@ -11,6 +11,10 @@ class Cliente
     private $telefono;
     private $telefono2;
     private $email;
+    private $departamento;
+    private $provincia;
+    private $distrito;
+    private $fecha_nacimiento;
     private $total_venta;
     private $ultima_venta;
     private $conectar;
@@ -193,9 +197,19 @@ class Cliente
         $this->ultima_venta = $ultima_venta;
     }
 
+    public function getDepartamento() { return $this->departamento; }
+    public function setDepartamento($departamento) { $this->departamento = strtoupper($departamento); }
+    public function getProvincia() { return $this->provincia; }
+    public function setProvincia($provincia) { $this->provincia = strtoupper($provincia); }
+    public function getDistrito() { return $this->distrito; }
+    public function setDistrito($distrito) { $this->distrito = strtoupper($distrito); }
+    public function getFechaNacimiento() { return $this->fecha_nacimiento; }
+    public function setFechaNacimiento($fecha_nacimiento) { $this->fecha_nacimiento = $fecha_nacimiento; }
+
     public function insertar()
     {
-        $sql = "insert into clientes values (NULL, '$this->documento', '$this->datos', '$this->direccion','$this->direccion2','$this->telefono','$this->telefono2','$this->email', {$_SESSION['id_empresa']}, '1000-01-01', '0')";
+        $sql = "insert into clientes (documento, datos, direccion, direccion2, telefono, telefono2, email, id_empresa, ultima_venta, total_venta, departamento, provincia, distrito, fecha_nacimiento) 
+                values ('$this->documento', '$this->datos', '$this->direccion','$this->direccion2','$this->telefono','$this->telefono2','$this->email', {$_SESSION['id_empresa']}, '1000-01-01', '0', '$this->departamento', '$this->provincia', '$this->distrito', ".($this->fecha_nacimiento ? "'$this->fecha_nacimiento'" : "NULL").")";
         $result =  $this->conectar->query($sql);
 
         if ($result) {
@@ -271,7 +285,7 @@ class Cliente
     {
 
         try {
-            $sql = "SELECT id_cliente,documento,datos,direccion,telefono,email,ultima_venta,total_venta FROM clientes  ORDER BY id_cliente DESC LIMIT 1";
+            $sql = "SELECT id_cliente,documento,datos,direccion,direccion2,telefono,telefono2,email,ultima_venta,total_venta,departamento,provincia,distrito,fecha_nacimiento FROM clientes  ORDER BY id_cliente DESC LIMIT 1";
             $fila = $this->conectar->query($sql)->fetch_object();
             return $fila;
         } catch (Exception $e) {
@@ -281,7 +295,7 @@ class Cliente
     public function getAllData()
     {
         try {
-            $sql = "SELECT id_cliente,documento,datos,email,telefono,ultima_venta,total_venta FROM clientes where id_empresa='{$_SESSION['id_empresa']}'";
+            $sql = "SELECT id_cliente,documento,datos,direccion,direccion2,telefono,telefono2,email,ultima_venta,total_venta,departamento,provincia,distrito,fecha_nacimiento FROM clientes where id_empresa='{$_SESSION['id_empresa']}'";
             $fila = mysqli_query($this->conectar, $sql);
             return mysqli_fetch_all($fila, MYSQLI_ASSOC);
         } catch (Exception $e) {
@@ -324,7 +338,7 @@ class Cliente
     }
     public function editar($id)
     {
-        $sql = "UPDATE clientes SET datos ='$this->datos',documento ='$this->documento',direccion ='$this->direccion',direccion2 ='$this->direccion2',telefono ='$this->telefono',telefono2 ='$this->telefono2',email='$this->email' WHERE id_cliente = $id";
+        $sql = "UPDATE clientes SET datos ='$this->datos',documento ='$this->documento',direccion ='$this->direccion',direccion2 ='$this->direccion2',telefono ='$this->telefono',telefono2 ='$this->telefono2',email='$this->email', departamento='$this->departamento', provincia='$this->provincia', distrito='$this->distrito', fecha_nacimiento=".($this->fecha_nacimiento ? "'$this->fecha_nacimiento'" : "NULL")." WHERE id_cliente = $id";
         $result =  $this->conectar->query($sql);
         return $result;
     }

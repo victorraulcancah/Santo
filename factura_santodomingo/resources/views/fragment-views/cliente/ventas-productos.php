@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 $conexion = (new Conexion())->getConexion();
 
 $datoEmpresa = $conexion->query("select * from empresas where id_empresa='{$_SESSION['id_empresa']}'")->fetch_assoc();
@@ -6,6 +7,7 @@ $datoEmpresa = $conexion->query("select * from empresas where id_empresa='{$_SES
 $igv_empresa = $datoEmpresa['igv'];
 
 ?>
+<meta charset="UTF-8">
 <style>
 	.text-left {
 		text-align: left;
@@ -16,7 +18,7 @@ $igv_empresa = $datoEmpresa['igv'];
 		<div class="col-md-8">
 			<h6 class="page-title">Ventas</h6>
 			<ol class="breadcrumb m-0">
-				<li class="breadcrumb-item"><a href="javascript: void(0);">Facturación</a></li>
+				<li class="breadcrumb-item"><a href="javascript: void(0);">Facturacion</a></li>
 				<li class="breadcrumb-item"><a href="/ventas" class="button-link">Ventas</a></li>
 				<li class="breadcrumb-item active" aria-current="page">Productos</li>
 			</ol>
@@ -55,7 +57,7 @@ if (isset($_GET["coti"])) {
 							<form v-on:submit.prevent="addProduct" class="form-horizontal">
 
 								<div class="form-group row mb-3">
-									<label class="col-lg-2 control-label">Almacén</label>
+									<label class="col-lg-2 control-label">Almacen</label>
 									<div class="col-lg-3">
 										<select class="form-control" @change="onChangeAlmacen($event)">
 											<option v-for="item in listaAlmacenes" :value="item.id">{{item.name}}</option>
@@ -82,15 +84,15 @@ if (isset($_GET["coti"])) {
 									</div>
 								</div>
 								<div class="form-group row mb-3">
-									<label class="col-lg-2 control-label">Descripción</label>
+									<label class="col-lg-2 control-label">Descripcion</label>
 									<div class="col-lg-10">
 										<input required v-model="producto.descripcion" type="text"
-											placeholder="Descripción" class="form-control" readonly="true">
+											placeholder="Descripcion" class="form-control" readonly="true">
 									</div>
 								</div>
 								<div class="form-groupw ">
 									<div class="row" style="margin-right: 0;">
-										<div class="form-group col-lg-4 col-md-4">
+										<div class="form-group col-lg-3 col-md-3">
 											<label for="example-text-input" class="col-form-label">Stock
 												Actual</label>
 											<div class="col-sm-6 col-md-12">
@@ -98,18 +100,30 @@ if (isset($_GET["coti"])) {
 													class="form-control text-center" type="text" placeholder="0">
 											</div>
 										</div>
-										<div class="form-group col-lg-4 col-md-4">
+										<div class="form-group col-lg-3 col-md-3" v-if="producto.id_unidad_derivada">
 											<label for="example-text-input"
-												class="col-form-label">Cantidad</label>
+												class="col-form-label">Presentacion <span class="text-danger">*</span></label>
+											<div class="col-sm-6 col-md-12">
+												<select class="form-control" v-model="producto.presentacion"
+													:class="{'border-danger': !producto.presentacion}">
+													<option value="">-- Elige --</option>
+													<option value="unidad">Unidad</option>
+													<option value="caja">{{producto.unidad_derivada_nombre}} x {{producto.unidades_por_caja}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group col-lg-3 col-md-3">
+											<label for="example-text-input"
+												class="col-form-label">{{producto.presentacion === 'caja' ? (producto.unidad_derivada_nombre || 'Cajas') : 'Cantidad'}}</label>
 											<div class="col-sm-6 col-md-12">
 												<input @keypress="onlyNumber" required v-model="producto.cantidad"
 													class="form-control text-center" type="text" placeholder="0"
 													id="example-text-input">
 											</div>
 										</div>
-										<div class="form-group col-lg-4 col-md-4">
+										<div class="form-group col-lg-3 col-md-3">
 											<label for="example-text-input"
-												class="col-form-label">Precio</label>
+												class="col-form-label">Precio Unidad</label>
 											<div class="col-sm-8 col-md-12">
 												<select name="" id="" class="form-control"
 													v-model="producto.precio_unidad">
@@ -138,10 +152,33 @@ if (isset($_GET["coti"])) {
 												class="col-sm-4 col-form-label">Serie</label>
 											<div class="col-sm-12" style="text-align: right;">
 												<button style="width: 100%" id="submit-a-product" type="submit"
-													class="btn btn-success"><i
+													class="btn btn-success"
+													:disabled="puedeAgregarVenta === false"
+													:title="puedeAgregarVenta === false ? 'Elige presentacion primero' : ''"><i
 														class="fa fa-check"></i> Agregar
 												</button>
 											</div>
+										</div>
+										<div class="col-lg-12" v-if="producto.id_unidad_derivada && !producto.presentacion">
+											<small class="text-danger">
+												<i class="fa fa-exclamation-triangle"></i>
+												Este producto se vende por <strong>Unidad</strong> o por <strong>{{producto.unidad_derivada_nombre}} x {{producto.unidades_por_caja}}</strong>. Debes elegir antes de agregar.
+											</small>
+										</div>
+										<div class="col-lg-12" v-if="producto.id_unidad_derivada && producto.unidades_por_caja > 1 && producto.precio_unidad > 0">
+											<small class="text-success" v-if="producto.presentacion === 'caja' && producto.cantidad > 0">
+												<i class="fa fa-info-circle"></i>
+												Precio por <strong>{{producto.unidad_derivada_nombre}}</strong>: <strong>{{producto.precio_unidad}}</strong>
+												→ Precio por unidad: <strong>{{(producto.precio_unidad / producto.unidades_por_caja).toFixed(4)}}</strong>
+												→ Cantidad en stock base: <strong>{{producto.cantidad * producto.unidades_por_caja}}</strong> unid.
+												| Total: <strong>{{(producto.precio_unidad * producto.cantidad).toFixed(2)}}</strong>
+											</small>
+											<small class="text-success" v-else-if="producto.presentacion === 'unidad' && producto.cantidad > 0">
+												<i class="fa fa-info-circle"></i>
+												Precio por <strong>{{producto.unidad_derivada_nombre}}</strong>: <strong>{{producto.precio_unidad}}</strong>
+												→ Precio por unidad: <strong>{{(producto.precio_unidad / producto.unidades_por_caja).toFixed(4)}}</strong>
+												| Total: <strong>{{((producto.precio_unidad / producto.unidades_por_caja) * producto.cantidad).toFixed(2)}}</strong>
+											</small>
 										</div>
 									</div>
 
@@ -173,6 +210,7 @@ if (isset($_GET["coti"])) {
 									<tr>
 										<th>Item</th>
 										<th>Producto</th>
+										<th>Present.</th>
 										<th>Cantidad</th>
 										<th>P. Unit.</th>
 										<th>Parcial</th>
@@ -184,6 +222,13 @@ if (isset($_GET["coti"])) {
 									<tr v-for="(item,index) in productos">
 										<td>{{index+1}}</td>
 										<td>{{item.descripcion}}</td>
+										<td>
+											<span v-if="item.cajas_vendidas" class="badge bg-info">
+												{{item.unidad_derivada_nombre || 'Caja'}} x {{item.unidades_por_caja}}
+												<br><small>{{item.cajas_vendidas}} {{item.unidad_derivada_nombre || 'caja'}}(s)</small>
+											</span>
+											<span v-else class="badge bg-secondary">Unidad</span>
+										</td>
 										<td><span v-if="!item.edicion">{{item.cantidad}}</span><input v-if="item.edicion"
 												v-model="item.cantidad">
 										</td>
@@ -248,11 +293,11 @@ if (isset($_GET["coti"])) {
 											<select v-model="venta.tipo_pago" @change="changeTipoPago"
 												class="form-control">
 												<option value="1">Contado</option>
-												<option value="2">Crédito</option>
+												<option value="2">Credito</option>
 											</select>
 										</div>
 										<div class="col-md-12 form-group">
-											<label class="control-label">Método Pago</label>
+											<label class="control-label">Metodo Pago</label>
 											<select class="form-control" v-model='venta.metodo'>
 												<option v-for="(value, key) in metodosPago"
 													:value="value.id_metodo_pago" :key="key">{{ value.nombre }}
@@ -306,7 +351,7 @@ if (isset($_GET["coti"])) {
 											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group ">
-														<label class="control-label">Emisión</label>
+														<label class="control-label">Emision</label>
 														<div class="col-lg-12">
 															<input v-model="venta.fecha" type="date"
 																placeholder="dd/mm/aaaa" name="input_fecha"
@@ -328,7 +373,7 @@ if (isset($_GET["coti"])) {
 										</div>
 									</div>
 									<div v-if="venta.tipo_pago=='2'" class="form-group ">
-										<label class="control-label">Días de pago</label>
+										<label class="control-label">Dias de pago</label>
 										<div class="col-lg-12">
 											<input @focus="focusDiasPagos" v-model="venta.dias_pago" type="text"
 												class="form-control text-center">
@@ -362,7 +407,7 @@ if (isset($_GET["coti"])) {
 									<div class="form-group  mb-3">
 										<div class="col-lg-12">
 											<div class="input-group">
-												<input v-model="venta.dir_cli" type="text" placeholder="Dirección 1"
+												<input v-model="venta.dir_cli" type="text" placeholder="Direccion 1"
 													class="form-control ui-autocomplete-input" autocomplete="off">
 												<div class="input-group-prepend">
 													<span class="input-group-text" id="basic-addon1">
@@ -376,7 +421,7 @@ if (isset($_GET["coti"])) {
 									<div class="form-group  mb-3">
 										<div class="col-lg-12">
 											<div class="input-group">
-												<input v-model="venta.dir2_cli" type="text" placeholder="Dirección 2"
+												<input v-model="venta.dir2_cli" type="text" placeholder="Direccion 2"
 													class="form-control ui-autocomplete-input" autocomplete="off">
 												<div class="input-group-prepend">
 													<span class="input-group-text" id="basic-addon1">
@@ -430,7 +475,7 @@ if (isset($_GET["coti"])) {
 											Pago</label>
 									</div>
 									<div v-if="venta.segundoPago" class="col-md-12 form-group">
-										<label class="control-label">Método Pago</label>
+										<label class="control-label">Metodo Pago</label>
 										<select class="form-control" v-model='venta.metodo2'>
 											<option v-for="(value, key) in metodosPago" :value="value.id_metodo_pago"
 												:key="key">{{ value.nombre }}
@@ -491,7 +536,7 @@ if (isset($_GET["coti"])) {
 					<div class="row mb-3">
 						<div class="col-md-6">
 							<div class="">
-								<label class="form-label">Fecha Emisión</label>
+								<label class="form-label">Fecha Emision</label>
 								<input v-model="venta.fecha" disabled type="date" class="form-control">
 							</div>
 						</div>
@@ -503,10 +548,10 @@ if (isset($_GET["coti"])) {
 						</div>
 					</div>
 					<div class="mb-3">
-						<label class="form-label">Días de pagos</label>
+						<label class="form-label">Dias de pagos</label>
 						<input placeholder="10,20,30,........" v-model="venta.dias_pago" @keypress="onlyNumberComas"
 							type="text" class="form-control">
-						<div class="form-text">Separar por comas los días de pagos</div>
+						<div class="form-text">Separar por comas los dias de pagos</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
@@ -810,7 +855,12 @@ if (isset($_GET["coti"])) {
 					precio_unidad: '',
 					precioVenta: '',
 					precio_usado: 1,
-					serie: ''
+					serie: '',
+					unidades_por_caja: 1,
+					volumen_unidad: '',
+					id_unidad_derivada: null,
+					unidad_derivada_nombre: '',
+					presentacion: ''
 				},
 				usar_precio: '5',
 				productos: [],
@@ -1150,6 +1200,11 @@ if (isset($_GET["coti"])) {
 
 										app.producto.codigo = ui.item.codigo
 										app.producto.costo = ui.item.costo
+										app.producto.unidades_por_caja = parseInt(ui.item.unidades_por_caja) || 1
+										app.producto.volumen_unidad = ui.item.volumen_unidad || ''
+										app.producto.id_unidad_derivada = ui.item.id_unidad_derivada ? parseInt(ui.item.id_unidad_derivada) : null
+										app.producto.unidad_derivada_nombre = ui.item.unidad_derivada_nombre || ''
+										app.producto.presentacion = app.producto.id_unidad_derivada ? '' : 'unidad'
 										//app.producto.serie_producto = ui.item.serie_producto
 										let array = [{
 												precio: app.producto.precio_unidad
@@ -1337,12 +1392,12 @@ if (isset($_GET["coti"])) {
 								if (this.venta.tipo_pago == 2) {
 									if (this.venta.dias_lista.length == 0) {
 										continuar = false;
-										mensaje = 'Debe especificar los días de pagos para un venta a crédito';
+										mensaje = 'Debe especificar los dias de pagos para un venta a credito';
 									}
 								}
 							} else if (this.venta.tipo_doc == '2') {
 								if (this.venta.nom_cli.length < 5) {
-									mensaje = 'Debe escribir la Razón Social o dar al botón para buscar el ruc';
+									mensaje = 'Debe escribir la Razon Social o dar al boton para buscar el ruc';
 									continuar = false;
 								}
 								if (this.venta.num_doc.length != 11) {
@@ -1353,7 +1408,7 @@ if (isset($_GET["coti"])) {
 								if (this.venta.tipo_pago == 2) {
 									if (this.venta.dias_lista.length == 0) {
 										continuar = false;
-										mensaje = 'Debe especificar los días de pagos para un venta a crédito';
+										mensaje = 'Debe especificar los dias de pagos para un venta a credito';
 									}
 								}
 
@@ -1487,7 +1542,12 @@ if (isset($_GET["coti"])) {
 						precio_unidad: '',
 						precioVenta: 0,
 						precio_usado: 1,
-						serie_producto: ''
+						serie_producto: '',
+						unidades_por_caja: 1,
+						volumen_unidad: '',
+						id_unidad_derivada: null,
+						unidad_derivada_nombre: '',
+						presentacion: ''
 					}
 					this.dataKeyCANT = 0;
 					this.dataKeyCANTs = 0;
@@ -1497,11 +1557,31 @@ if (isset($_GET["coti"])) {
 
 				},
 				addProduct() {
+					// Validacion: si el producto tiene unidad derivada, exigir presentacion
+					if (this.producto.id_unidad_derivada && !this.producto.presentacion) {
+						alertAdvertencia("Debes elegir Unidad o " + this.producto.unidad_derivada_nombre + " antes de agregar");
+						return;
+					}
 					//if (this.producto.stock)
 					if (this.producto.descripcion.length > 0) {
 						const prod = {
 							...this.producto
 						}
+
+						// Regla: si el producto tiene unidad derivada (caja), el precio almacenado
+						// ES el precio de la CAJA. Para sacar el precio por unidad: dividir / upc.
+						const upc = parseInt(prod.unidades_por_caja) || 1;
+						if (prod.id_unidad_derivada && upc > 1) {
+							const precioPorCaja = parseFloat(prod.precio_unidad) || 0;
+							prod.precio_caja = precioPorCaja;
+							prod.precioVenta = (precioPorCaja / upc).toFixed(4);
+							if (prod.presentacion === 'caja') {
+								const cajas = parseFloat(prod.cantidad) || 0;
+								prod.cajas_vendidas = cajas;
+								prod.cantidad = cajas * upc;
+							}
+						}
+
 						//console.log(this.producto)
 						this.productos.push(prod)
 						this.limpiasDatos();
@@ -1518,6 +1598,11 @@ if (isset($_GET["coti"])) {
 				}
 			},
 			computed: {
+				puedeAgregarVenta() {
+					if (!this.producto.descripcion) return false;
+					if (this.producto.id_unidad_derivada && !this.producto.presentacion) return false;
+					return true;
+				},
 				monedaSibol() {
 					return (this.venta.moneda == 1 ? 'S/' : '$')
 				},
@@ -1708,6 +1793,11 @@ if (isset($_GET["coti"])) {
 
 				app.producto.codigo = ui.item.codigo
 				app.producto.costo = ui.item.costo
+				app.producto.unidades_por_caja = parseInt(ui.item.unidades_por_caja) || 1
+				app.producto.volumen_unidad = ui.item.volumen_unidad || ''
+				app.producto.id_unidad_derivada = ui.item.id_unidad_derivada ? parseInt(ui.item.id_unidad_derivada) : null
+				app.producto.unidad_derivada_nombre = ui.item.unidad_derivada_nombre || ''
+				app.producto.presentacion = app.producto.id_unidad_derivada ? '' : 'unidad'
 				//app.producto.serie_producto = ui.item.serie_producto
 				let array = [{
 						precio: app.producto.precio

@@ -148,7 +148,7 @@ $listaUsd = $conexion->query($sql);
                                 <input v-model="reg.usuario" type="text" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Contraseña:<span class="rojo">(*)</span> </label>
+                                <label>Contrasena:<span class="rojo">(*)</span> </label>
                                 <input v-model="reg.clave" type="password" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
@@ -235,7 +235,7 @@ $listaUsd = $conexion->query($sql);
                                 <div class="alert alert-warning" role="alert">
 
 
-                                    <span>Asigne la serie y número correspondiente para continuar a emitir comprobante electrónico, <b>para la parte de numero de documento coloque el próximo número a asignar.</b> </span>
+                                    <span>Asigne la serie y numero correspondiente para continuar a emitir comprobante electronico, <b>para la parte de numero de documento coloque el proximo numero a asignar.</b> </span>
                                 </div>
                             </div>
                             <div class="form-group col-md-3 mt-2">
@@ -318,7 +318,7 @@ $listaUsd = $conexion->query($sql);
                             </div>
 
                             <div class="form-group col-md-3 mt-2">
-                                <label>Guia Remisión: </label>
+                                <label>Guia Remision: </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Serie</span>
@@ -397,7 +397,7 @@ $listaUsd = $conexion->query($sql);
                                 <input v-model="edt.usuario" type="text" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Contraseña:<span class="rojo">(*)</span> </label>
+                                <label>Contrasena:<span class="rojo">(*)</span> </label>
                                 <input v-model="edt.clave" type="password" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
@@ -511,7 +511,7 @@ $listaUsd = $conexion->query($sql);
                                 <input v-model="edt.usuario" type="text" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Contraseña:<span class="rojo">(*)</span> </label>
+                                <label>Contrasena:<span class="rojo">(*)</span> </label>
                                 <input v-model="edt.clave" type="password" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
@@ -536,7 +536,7 @@ $listaUsd = $conexion->query($sql);
                                 <div class="alert alert-warning" role="alert">
 
 
-                                    <span>Asigne la serie y número correspondiente para continuar a emitir comprobante electrónico, <b>para la parte de numero de documento coloque el próximo número a asignar.</b> </span>
+                                    <span>Asigne la serie y numero correspondiente para continuar a emitir comprobante electronico, <b>para la parte de numero de documento coloque el proximo numero a asignar.</b> </span>
                                 </div>
                             </div>
                             <div class="form-group col-md-3 mt-2">
@@ -618,7 +618,7 @@ $listaUsd = $conexion->query($sql);
                             </div>
 
                             <div class="form-group col-md-3 mt-2">
-                                <label>Guia Remisión: </label>
+                                <label>Guia Remision: </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Serie</span>
@@ -747,7 +747,7 @@ $listaUsd = $conexion->query($sql);
                                 <input v-model="sucursales.add.usuario" type="text" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Contraseña:<span class="rojo">(*)</span> </label>
+                                <label>Contrasena:<span class="rojo">(*)</span> </label>
                                 <input v-model="sucursales.add.clave" type="password" class="form-control">
                             </div>
                         </div>
@@ -765,7 +765,7 @@ $listaUsd = $conexion->query($sql);
                                 <div class="alert alert-warning" role="alert">
 
 
-                                    <span>Asigne la serie y número correspondiente para continuar a emitir comprobante electrónico, <b>para la parte de numero de documento coloque el próximo número a asignar.</b> </span>
+                                    <span>Asigne la serie y numero correspondiente para continuar a emitir comprobante electronico, <b>para la parte de numero de documento coloque el proximo numero a asignar.</b> </span>
                                 </div>
                             </div>
                             <div class="form-group col-md-3 mt-2">
@@ -846,7 +846,7 @@ $listaUsd = $conexion->query($sql);
                                 </div>
                             </div>
                             <div class="form-group col-md-3 mt-2">
-                                <label>Guia Remisión: </label>
+                                <label>Guia Remision: </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Serie</span>
@@ -926,7 +926,7 @@ $listaUsd = $conexion->query($sql);
                                 <input v-model="sucursales.edt.usuario" type="text" class="form-control">
                             </div>
                             <div class="form-group col-md-3">
-                                <label>Contraseña:<span class="rojo">(*)</span> </label>
+                                <label>Contrasena:<span class="rojo">(*)</span> </label>
                                 <input v-model="sucursales.edt.clave" type="password" class="form-control">
                             </div> -->
                         </div>
@@ -944,7 +944,7 @@ $listaUsd = $conexion->query($sql);
                                 <div class="alert alert-warning" role="alert">
 
 
-                                    <span>Asigne la serie y número correspondiente para continuar a emitir comprobante electrónico, <b>para la parte de numero de documento coloque el próximo número a asignar.</b> </span>
+                                    <span>Asigne la serie y numero correspondiente para continuar a emitir comprobante electronico, <b>para la parte de numero de documento coloque el proximo numero a asignar.</b> </span>
                                 </div>
                             </div>
                             <div class="form-group col-md-3 mt-2">
@@ -1025,7 +1025,7 @@ $listaUsd = $conexion->query($sql);
                                 </div>
                             </div>
                             <div class="form-group col-md-3 mt-2">
-                                <label>Guia Remisión: </label>
+                                <label>Guia Remision: </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Serie</span>
@@ -1515,7 +1515,7 @@ $listaUsd = $conexion->query($sql);
 
                         this.getInfoDocSuc();
                     } else {
-                        alertAdvertencia("El DNI es de 8 dígitos")
+                        alertAdvertencia("El DNI es de 8 digitos")
                     }
                 },
                 getInfoDocSuc() {
@@ -1749,7 +1749,7 @@ $listaUsd = $conexion->query($sql);
 
                         this.getInfoDoc();
                     } else {
-                        alertAdvertencia("El DNI es de 8 dígitos")
+                        alertAdvertencia("El DNI es de 8 digitos")
                     }
                 },
                 ChangeconsultarDocRUC() {
@@ -1764,7 +1764,7 @@ $listaUsd = $conexion->query($sql);
 
                         this.getInfoDoc2();
                     } else {
-                        alertAdvertencia("El RUC es de 11 dígitos")
+                        alertAdvertencia("El RUC es de 11 digitos")
                     }
                 },
                 getInfoDoc2() {

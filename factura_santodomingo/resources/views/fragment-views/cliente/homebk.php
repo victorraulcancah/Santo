@@ -83,7 +83,7 @@
         <div class="col-md-8">
             <h6 class="page-title">Dashboard</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item active">Bienvenido <strong>VIÑA SANTO DOMINGO</strong> al Sistema de Facturación Electrónica <strong>HATUNA</strong></li>
+                <li class="breadcrumb-item active">Bienvenido <strong>VINA SANTO DOMINGO</strong> al Sistema de Facturacion Electronica <strong>HATUNA</strong></li>
             </ol>
         </div>
         <div class="col-md-4">
@@ -103,7 +103,7 @@
                     <div class="float-start mini-stat-img me-4">
                         <img src="<?=URL::to('public/assets/images/services-icon/01.png')?>" alt="">
                     </div>
-                    <h5 class="font-size-16 text-uppercase text-white-50">Mi Comisión</h5>
+                    <h5 class="font-size-16 text-uppercase text-white-50">Mi Comision</h5>
                     <h4 class="fw-medium font-size-24">S/ <?=number_format($data["totalv"], 2, ".", ",")?></h4>
                     <div class="mini-stat-label bg-success">
                         <p class="mb-0">Mes</p>
@@ -148,7 +148,7 @@
                     </div>
                 </div>
                 <div class="pt-2">
-                    <p class="text-white-50 mb-0 mt-1">Comisión mes anterior</p>
+                    <p class="text-white-50 mb-0 mt-1">Comision mes anterior</p>
                 </div>
             </div>
         </div>
@@ -317,7 +317,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-4"><?= $esVendedor ? 'Mi Comisión Anual' : 'Venta Anual' ?></h4>
+                <h4 class="card-title mb-4"><?= $esVendedor ? 'Mi Comision Anual' : 'Venta Anual' ?></h4>
                 <div class="row">
                     <div class="col-lg-7">
                         <div>
@@ -331,7 +331,7 @@
                                 <div class="text-center">
                                     <p class="text-muted mb-4">Este Mes</p>
                                     <h3>S/ <?=number_format($data["totalv"], 2, ".", ",")?></h3>
-                                    <p class="text-muted mb-5"><?= $esVendedor ? 'Mi Comisión.' : 'Ganancias Totales.' ?></p>
+                                    <p class="text-muted mb-5"><?= $esVendedor ? 'Mi Comision.' : 'Ganancias Totales.' ?></p>
                                     <span class="peity-donut"
                                           data-peity='{ "fill": ["#02a499", "#f2f2f2"], "innerRadius": 28, "radius": 32 }'
                                           data-width="72" data-height="72"></span>
@@ -341,7 +341,7 @@
                                 <div class="text-center">
                                     <p class="text-muted mb-4">Mes Anterior</p>
                                     <h3>S/ <?=number_format($data["totalvMA"], 2, ".", ",")?></h3>
-                                    <p class="text-muted mb-5">Comparativa <?= $esVendedor ? 'Mi Comisión.' : 'Ganancias Totales.' ?></p>
+                                    <p class="text-muted mb-5">Comparativa <?= $esVendedor ? 'Mi Comision.' : 'Ganancias Totales.' ?></p>
                                     <span class="peity-donut"
                                           data-peity='{ "fill": ["#02a499", "#f2f2f2"], "innerRadius": 28, "radius": 32 }'
                                           data-width="72" data-height="72"></span>
@@ -459,7 +459,7 @@
 				labels: getMesAbreLinst("es"),
 				datasets: [
 					{
-						label: '<?= $esVendedor ? "Mi Comisión" : "Ventas" ?>',
+						label: '<?= $esVendedor ? "Mi Comision" : "Ventas" ?>',
 						data: JSON.parse($("#listatempdata").val()),
 						borderColor: "#626ed4",
 						backgroundColor: "rgba(98,110,212,0.36)",

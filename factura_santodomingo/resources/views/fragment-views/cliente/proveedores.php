@@ -156,7 +156,7 @@
 
 
                                             <!--<div class="col-md-6 mt-3">
-                                                <label for="direccionAgregar2">Dirección de Llegada</label>
+                                                <label for="direccionAgregar2">Direccion de Llegada</label>
                                                 <input type="text" class="form-control" id="direccionAgregar2"
                                                        name="direccionAgregar2">
                                             </div>-->
@@ -166,18 +166,18 @@
                                                        name="email">
                                             </div>
                                             <div class="col-md-6 mt-3">
-                                                <label for="telefonoAgregar">Teléfono</label>
+                                                <label for="telefonoAgregar">Telefono</label>
                                                 <input type="number" class="form-control" id="telefonoAgregar"
                                                        name="telefono">
                                             </div>
                                             <!--<div class="col-md-6 mt-3">
-                                                <label for="telefonoAgregar2">Teléfono 2</label>
+                                                <label for="telefonoAgregar2">Telefono 2</label>
                                                 <input type="number" class="form-control" id="telefonoAgregar2"
                                                        name="telefonoAgregar2">
                                             </div>-->
 
                                             <div class="col-md-6 mt-3">
-                                                <label for="direccionAgregar">Dirección</label>
+                                                <label for="direccionAgregar">Direccion</label>
                                                 <input type="text" class="form-control" id="direccionAgregar"
                                                        name="direccion">
                                             </div>
@@ -280,7 +280,7 @@
                                     <th>RUC</th>
                                     <th>Razon Social</th>
                                     <th>Email</th>
-                                    <th>Télefono</th>
+                                    <th>Telefono</th>
                                     <th>Direccion</th>
                                     <th>Creado</th>
                                     <th>Acciones</th>
@@ -403,7 +403,7 @@
 					let data = JSON.parse(resp);
 					if (typeof data === "object") {
 						tabla_clientes.ajax.reload(null, false);
-						Swal.fire("¡Buen trabajo!", "Registro Exitoso", "success");
+						Swal.fire("Buen trabajo!", "Registro Exitoso", "success");
 						$("#agregarModal").modal("hide");
 						$("body").removeClass("modal-open");
 						$("#frmClientesAgregar").trigger("reset");
@@ -426,7 +426,7 @@
 			$("#editarModal").modal("show");
 			$("#editarModal")
 				.find(".modal-title")
-				.text("Editar Proveedor N°" + id);
+				.text("Editar Proveedor No" + id);
 			$.ajax({
 				url: _URL + "/ajs/proveedores/get",
 				data: {
@@ -470,7 +470,7 @@
 					console.log(data);
 					if (Array.isArray(data)) {
 						tabla_clientes.ajax.reload(null, false);
-						Swal.fire("¡Buen trabajo!", "Actualización exitosa", "success");
+						Swal.fire("Buen trabajo!", "Actualizacion exitosa", "success");
 						$("#editarModal").modal("hide");
 						$("body").removeClass("modal-open");
 					} else {
@@ -490,7 +490,7 @@
 				id: id,
 			};
 			Swal.fire({
-				title: "¿Deseas borrar el registro?",
+				title: "Deseas borrar el registro?",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
@@ -506,7 +506,7 @@
 							/* console.log(resp); */
 							tabla_clientes.ajax.reload(null, false);
 							Swal.fire(
-								"¡Buen trabajo!",
+								"Buen trabajo!",
 								"Registro Borrado Exitosamente",
 								"success"
 							);

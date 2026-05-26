@@ -25,11 +25,11 @@
                 <li hidden>
                     <a href="javascript: void(0);" class="has-arrow waves-effect ">
                         <i class="ti-email"></i>
-                        <span>Correo Electrónico</span>
+                        <span>Correo Electronico</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="email-inbox.html">Bandeja de Entrada</a></li>
-                        <li><a href="email-read.html">Email Leídos</a></li>
+                        <li><a href="email-read.html">Email Leidos</a></li>
                         <li><a href="email-compose.html">Redactar Correo</a></li>
                     </ul>
                 </li>
@@ -39,11 +39,11 @@
                 <li hidden>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ti-package"></i>
-                        <span>Facturación</span>
+                        <span>Facturacion</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="/ventas" class=" menu-link">Ventas</a></li>
-                        <li><a href="/guias/remision" class=" menu-link">Guías Remisión</a></li>
+                        <li><a href="/guias/remision" class=" menu-link">Guias Remision</a></li>
                     </ul>
                 </li>
 
@@ -68,7 +68,7 @@
                 <li  hidden>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ti-view-grid"></i>
-                        <span>ALMACÉN</span>
+                        <span>ALMACEN</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a  href="/almacen/productos" class=" menu-link">Productos</a></li>

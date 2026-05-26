@@ -57,6 +57,7 @@
 
     #USUARIOS
     Route::postBase("/usuarios", "FragmentController@usuarios");
+    Route::postBase("/pagos/vendedores", "FragmentController@pagosVendedores");
 
 
     Route::postBase("/cotizaciones", "FragmentController@cotizaciones");
@@ -68,6 +69,7 @@
 
     Route::postBase("/almacen/productos", "FragmentController@almacenProductos");
     Route::postBase("/almacen/productos/add", "FragmentController@productoAdd");
+    Route::postBase("/almacen/unidades-derivadas", "FragmentController@almacenUnidadesDerivadas");
     Route::postBase("/test", "FragmentController@test");
 
     Route::postBase("/almacen/intercambio/productos", "FragmentController@almacenIntercambioProductos");

@@ -33,6 +33,18 @@ Route::post("/ajs/data/producto/infos", "ProductosController@informacionPorSerie
 Route::post("/ajs/data/producto/categorias", "ProductosController@categoprod")->Middleware([ValidarTokenMiddleware::class]);
 Route::post("/ajs/data/producto/costost", "ProductosController@costoinv")->Middleware([ValidarTokenMiddleware::class]);
 
+// Unidades Derivadas (catalogo)
+Route::post("/ajs/unidades-derivadas/listar", "UnidadesDerivadasController@listar")->Middleware([ValidarTokenMiddleware::class]);
+Route::post("/ajs/unidades-derivadas/add", "UnidadesDerivadasController@agregar")->Middleware([ValidarTokenMiddleware::class]);
+Route::post("/ajs/unidades-derivadas/edt", "UnidadesDerivadasController@actualizar")->Middleware([ValidarTokenMiddleware::class]);
+Route::post("/ajs/unidades-derivadas/del", "UnidadesDerivadasController@eliminar")->Middleware([ValidarTokenMiddleware::class]);
+
+// Planilla de pagos a vendedores
+Route::post("/ajs/planilla/calcular", "PlanillaController@calcular")->Middleware([ValidarTokenMiddleware::class]);
+Route::post("/ajs/planilla/aprobar", "PlanillaController@aprobar")->Middleware([ValidarTokenMiddleware::class]);
+Route::post("/ajs/planilla/historial", "PlanillaController@historial")->Middleware([ValidarTokenMiddleware::class]);
+Route::post("/ajs/planilla/eliminar", "PlanillaController@eliminar")->Middleware([ValidarTokenMiddleware::class]);
+
 Route::get("/ajs/data/almacenes", "AlmacenesController@index")->Middleware([ValidarTokenMiddleware::class]);
 
 Route::post("/ajs/data/producto/restock", "ProductosController@restock")->Middleware([ValidarTokenMiddleware::class]);

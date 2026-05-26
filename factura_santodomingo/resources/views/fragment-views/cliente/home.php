@@ -19,12 +19,18 @@
 
     $conexion = (new Conexion())->getConexion();
 
-    $COMISION_PORCENTAJE = 0.10; // 10% de comision
-
+    // Leer config FRESCA de la BD (no de la sesion cacheada al login)
+    $_cfgRow = $conexion->query("SELECT tipo_sueldo, monto_sueldo_fijo, porcentaje_sueldo_comision,
+                                        meta_ventas, porcentaje_comision_meta
+                                 FROM usuarios WHERE usuario_id = $usuario_id")->fetch_assoc() ?: [];
+    $tipo_sueldo = (int)($_cfgRow['tipo_sueldo'] ?? 1);
+    $monto_sueldo_fijo = (float)($_cfgRow['monto_sueldo_fijo'] ?? 0);
+    $pct_sueldo_comision = ((float)($_cfgRow['porcentaje_sueldo_comision'] ?? 0)) / 100;
+    $meta_ventas = (float)($_cfgRow['meta_ventas'] ?? 0);
+    $pct_comision_meta = ((float)($_cfgRow['porcentaje_comision_meta'] ?? 0)) / 100;
     if ($esVendedor) {
         // Vendedor: datos basados en cotizaciones (tiene id_usuario)
         $sql = "SELECT
-            (SELECT SUM(total) * $COMISION_PORCENTAJE FROM cotizaciones WHERE id_empresa='$empresa' AND estado <> '2' AND sucursal='$sucursal' AND id_usuario='$usuario_id' AND YEAR(fecha)='$anio1' AND MONTH(fecha)='$mes1') totalv,
             (SELECT COUNT(DISTINCT id_cliente) FROM cotizaciones WHERE id_empresa='$empresa' AND estado <> '2' AND sucursal='$sucursal' AND id_usuario='$usuario_id') cnt_cli,
             (SELECT SUM(total) FROM cotizaciones WHERE id_empresa='$empresa' AND estado <> '2' AND sucursal='$sucursal' AND id_usuario='$usuario_id' AND YEAR(fecha)='$anio1' AND MONTH(fecha)='$mes1') ventaTotal,
             (SELECT COALESCE(SUM(pc.cantidad), 0) FROM productos_cotis pc INNER JOIN cotizaciones c ON pc.id_coti = c.cotizacion_id WHERE c.id_empresa='$empresa' AND c.estado <> '2' AND c.sucursal='$sucursal' AND c.id_usuario='$usuario_id' AND YEAR(c.fecha)='$anio1' AND MONTH(c.fecha)='$mes1') totalCajas
@@ -42,10 +48,24 @@
 
     $data = $conexion->query($sql)->fetch_assoc();
 
+    $ventaTotal = floatval($data["ventaTotal"] ?? 0);
+    $sueldo_base = 0;
+    if ($tipo_sueldo == 1) {
+        $sueldo_base = floatval($monto_sueldo_fijo);
+    } else {
+        $sueldo_base = $ventaTotal * $pct_sueldo_comision;
+    }
+    
+    $bono_meta = 0;
+    if ($meta_ventas > 0 && $ventaTotal >= $meta_ventas) {
+        $bono_meta = $ventaTotal * $pct_comision_meta; 
+    }
+    
+    $total_ganancias = $sueldo_base + $bono_meta;
     $dataListVen = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     if ($esVendedor) {
-        $sql = "SELECT MONTH(fecha) mes, SUM(total) * $COMISION_PORCENTAJE as total
+        $sql = "SELECT MONTH(fecha) mes, SUM(total) as total
             FROM cotizaciones
             WHERE id_empresa = '$empresa' AND estado <> '2' AND sucursal='$sucursal' AND id_usuario='$usuario_id' AND YEAR(fecha) = '$anio1'
             GROUP BY mes";
@@ -60,7 +80,14 @@
     foreach ($resultList as $dtTemp) {
         $tempValue = 0;
         if (doubleval($dtTemp['total']) > 0) {
-            $tempValue = doubleval($dtTemp['total']);
+            $mes_total = doubleval($dtTemp['total']);
+            if ($esVendedor) {
+                $mes_base = ($tipo_sueldo == 1) ? floatval($monto_sueldo_fijo) : ($mes_total * $pct_sueldo_comision);
+                $mes_bono = ($meta_ventas > 0 && $mes_total >= $meta_ventas) ? ($mes_total * $pct_comision_meta) : 0;
+                $tempValue = $mes_base + $mes_bono;
+            } else {
+                $tempValue = $mes_total;
+            }
         }
         $dataListVen[intval($dtTemp['mes'])] = $tempValue;
     }
@@ -96,7 +123,7 @@
         <div class="col-md-8">
             <h6 class="page-title">Dashboard</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item active">Bienvenido <strong>VIÑA SANTO DOMINGO</strong> al Sistema de Facturación Electrónica <strong>HATUNA</strong></li>
+                <li class="breadcrumb-item active">Bienvenido <strong>VINA SANTO DOMINGO</strong> al Sistema de Facturacion Electronica <strong>HATUNA</strong></li>
             </ol>
         </div>
         <div class="col-md-4">
@@ -116,14 +143,14 @@
                     <div class="float-start mini-stat-img me-4">
                         <img src="<?=URL::to('public/assets/images/services-icon/01.png')?>" alt="">
                     </div>
-                    <h5 class="font-size-16 text-uppercase text-white-50">Mi Comisión</h5>
-                    <h4 class="fw-medium font-size-24">S/ <?=number_format($data["totalv"], 2, ".", ",")?></h4>
+                    <h5 class="font-size-16 text-uppercase text-white-50">Sueldo Base</h5>
+                    <h4 class="fw-medium font-size-24">S/ <?=number_format($sueldo_base, 2, ".", ",")?></h4>
                     <div class="mini-stat-label bg-success">
                         <p class="mb-0">Mes</p>
                     </div>
                 </div>
                 <div class="pt-2">
-                    <p class="text-white-50 mb-0 mt-1">10% de mis ventas</p>
+                    <p class="text-white-50 mb-0 mt-1"><?= ($tipo_sueldo == 1) ? 'Sueldo Fijo' : 'Sueldo por Comision ('.($pct_sueldo_comision*100).'%)' ?></p>
                 </div>
             </div>
         </div>
@@ -135,14 +162,14 @@
                     <div class="float-start mini-stat-img me-4">
                         <img src="<?=URL::to('public/assets/images/services-icon/02.png')?>" alt="">
                     </div>
-                    <h5 class="font-size-16 text-uppercase text-white-50">Mis Clientes</h5>
-                    <h4 class="fw-medium font-size-24"><?=$data["cnt_cli"] ?? 0?></h4>
+                    <h5 class="font-size-16 text-uppercase text-white-50">Bono por Meta</h5>
+                    <h4 class="fw-medium font-size-24">S/ <?=number_format($bono_meta, 2, ".", ",")?></h4>
                     <div class="mini-stat-label bg-info">
-                        <p class="mb-0">Total</p>
+                        <p class="mb-0"><?= ($meta_ventas>0 && $ventaTotal >= $meta_ventas)?'Logrado':'Pendiente' ?></p>
                     </div>
                 </div>
                 <div class="pt-2">
-                    <p class="text-white-50 mb-0 mt-1">Clientes atendidos</p>
+                    <p class="text-white-50 mb-0 mt-1"><?= ($meta_ventas>0) ? 'Meta: S/ '.$meta_ventas : 'Sin bono' ?></p>
                 </div>
             </div>
         </div>
@@ -154,14 +181,14 @@
                     <div class="float-start mini-stat-img me-4">
                         <img src="<?=URL::to('public/assets/images/services-icon/03.png')?>" alt="">
                     </div>
-                    <h5 class="font-size-16 text-uppercase text-white-50">Venta Total</h5>
-                    <h4 class="fw-medium font-size-24">S/ <?=number_format($data["ventaTotal"], 2, ".", ",")?></h4>
+                    <h5 class="font-size-16 text-uppercase text-white-50">Total a Ganar</h5>
+                    <h4 class="fw-medium font-size-24">S/ <?=number_format($total_ganancias, 2, ".", ",")?></h4>
                     <div class="mini-stat-label bg-danger">
                         <p class="mb-0">Mes</p>
                     </div>
                 </div>
                 <div class="pt-2">
-                    <p class="text-white-50 mb-0 mt-1">Total vendido este mes</p>
+                    <p class="text-white-50 mb-0 mt-1">Sueldo Base + Bono</p>
                 </div>
             </div>
         </div>
@@ -173,14 +200,14 @@
                     <div class="float-start mini-stat-img me-4">
                         <img src="<?=URL::to('public/assets/images/services-icon/04.png')?>" alt="">
                     </div>
-                    <h5 class="font-size-16 text-uppercase text-white-50">Cajas Vendidas</h5>
-                    <h4 class="fw-medium font-size-24"><?=intval($data["totalCajas"])?></h4>
+                    <h5 class="font-size-16 text-uppercase text-white-50">Venta Total</h5>
+                    <h4 class="fw-medium font-size-24">S/ <?=number_format($ventaTotal, 2, ".", ",")?></h4>
                     <div class="mini-stat-label bg-warning">
                         <p class="mb-0">Mes</p>
                     </div>
                 </div>
                 <div class="pt-2">
-                    <p class="text-white-50 mb-0 mt-1">Número de cajas este mes</p>
+                    <p class="text-white-50 mb-0 mt-1">Total vendido este mes</p>
                 </div>
             </div>
         </div>
@@ -385,7 +412,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-4"><?= $esVendedor ? 'Mi Comisión Anual' : 'Venta Anual' ?></h4>
+                <h4 class="card-title mb-4"><?= $esVendedor ? 'Mi Comision Anual' : 'Venta Anual' ?></h4>
                 <div class="row">
                     <div class="col-lg-7">
                         <div>
@@ -398,8 +425,8 @@
                             <div class="col-md-6">
                                 <div class="text-center">
                                     <p class="text-muted mb-4">Este Mes</p>
-                                    <h3>S/ <?=number_format($data["totalv"], 2, ".", ",")?></h3>
-                                    <p class="text-muted mb-5"><?= $esVendedor ? 'Mi Comisión.' : 'Ganancias Totales.' ?></p>
+                                    <h3>S/ <?= $esVendedor ? number_format($total_ganancias, 2, ".", ",") : number_format($data["totalv"], 2, ".", ",")?></h3>
+                                    <p class="text-muted mb-5"><?= $esVendedor ? 'Mi Ingreso Total (Sueldo + Bono).' : 'Ganancias Totales.' ?></p>
                                     <span class="peity-donut"
                                           data-peity='{ "fill": ["#02a499", "#f2f2f2"], "innerRadius": 28, "radius": 32 }'
                                           data-width="72" data-height="72"></span>
@@ -409,7 +436,7 @@
                                 <div class="text-center">
                                     <p class="text-muted mb-4"><?= $esVendedor ? 'Venta Total Mes' : 'Mes Anterior' ?></p>
                                     <h3>S/ <?= $esVendedor ? number_format($data["ventaTotal"], 2, ".", ",") : number_format($data["totalvMA"], 2, ".", ",") ?></h3>
-                                    <p class="text-muted mb-5"><?= $esVendedor ? 'Total sin comisión.' : 'Comparativa Ganancias Totales.' ?></p>
+                                    <p class="text-muted mb-5"><?= $esVendedor ? 'Total sin comision.' : 'Comparativa Ganancias Totales.' ?></p>
                                     <span class="peity-donut"
                                           data-peity='{ "fill": ["#02a499", "#f2f2f2"], "innerRadius": 28, "radius": 32 }'
                                           data-width="72" data-height="72"></span>
@@ -527,7 +554,7 @@
 				labels: getMesAbreLinst("es"),
 				datasets: [
 					{
-						label: '<?= $esVendedor ? "Mi Comisión" : "Ventas" ?>',
+						label: '<?= $esVendedor ? "Ingreso Mensual (Sueldo + Bono)" : "Ventas" ?>',
 						data: JSON.parse($("#listatempdata").val()),
 						borderColor: "#626ed4",
 						backgroundColor: "rgba(98,110,212,0.36)",

@@ -189,7 +189,7 @@
                         </div>
 
                         <h4 class="font-size-18 mt-5 text-center">Bienvenido de nuevo !</h4>
-                        <p class="text-muted text-center">Inicie sesión para continuar </p>
+                        <p class="text-muted text-center">Inicie sesion para continuar </p>
                         <h4 class="font-size-18  text-center">Facturacion Electronica</h4>
                         <form class="mt-4">
 
@@ -200,7 +200,7 @@
 
 
                             <div class="mb-3">
-                                <label class="form-label" for="userpassword">Contraseña</label>
+                                <label class="form-label" for="userpassword">Contrasena</label>
                                 <input required name="clave" type="password" class="form-control" id="userpassword" placeholder="">
                             </div>
 
@@ -218,14 +218,14 @@
 
                             <div class="mb-3 mt-2 mb-0 row">
                                 <div class="col-12 mt-3">
-                                    <a href="pages-recoverpw-2.html"><i class="mdi mdi-lock"></i> ¿Olvidastes tu contraseña?</a>
+                                    <a href="pages-recoverpw-2.html"><i class="mdi mdi-lock"></i> Olvidastes tu contrasena?</a>
                                 </div>
                             </div>
 
                         </form>
 
                         <div class="mt-5 pt-4 text-center">
-                            <p hidden>Regístrate ? <a href="pages-register-2.html" class="fw-medium text-primary"> Signup now </a> </p>
+                            <p hidden>Registrate ? <a href="pages-register-2.html" class="fw-medium text-primary"> Signup now </a> </p>
                             <p>© <script>document.write(new Date().getFullYear())</script> <b>HATUNA desarrollado junto a <br> <a href="https://magustechnologies.com/" target="_blank">Magus Technologies</a></b></p><p> Todos los derechos reservados</p>
                         </div>
 

@@ -16,7 +16,7 @@
         <div class="col-md-8">
             <h6 class="page-title">Ventas</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturación</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturacion</a></li>
                 <li class="breadcrumb-item"><a href="/ventas" class="button-link">Ventas</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Productos</li>
             </ol>
@@ -53,11 +53,11 @@
                             <form v-on:submit.prevent="addProduct" class="form-horizontal">
 
                                 <div hidden class="form-group row mb-3">
-                                    <label class="col-lg-2 control-label">Almacén</label>
+                                    <label class="col-lg-2 control-label">Almacen</label>
                                     <div class="col-lg-3">
                                         <select class="form-control idAlmacen" v-model='producto.almacen'
                                                 @change="onChangeAlmacen($event)">
-                                            <option value="1">Almacén 1</option>
+                                            <option value="1">Almacen 1</option>
                                             <option value="2">Tienda 1</option>
                                         </select>
                                     </div>
@@ -82,10 +82,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
-                                    <label class="col-lg-2 control-label">Descripción</label>
+                                    <label class="col-lg-2 control-label">Descripcion</label>
                                     <div class="col-lg-10">
                                         <input required v-model="producto.descripcion" type="text"
-                                               placeholder="Descripción" class="form-control" readonly="true">
+                                               placeholder="Descripcion" class="form-control" readonly="true">
                                     </div>
                                 </div>
                                 <div class="form-groupw ">
@@ -248,11 +248,11 @@
                                             <select v-model="venta.tipo_pago" @change="changeTipoPago"
                                                     class="form-control">
                                                 <option value="1">Contado</option>
-                                                <option value="2">Crédito</option>
+                                                <option value="2">Credito</option>
                                             </select>
                                         </div>
                                         <div class="col-md-12 form-group">
-                                            <label class="control-label">Método Pago</label>
+                                            <label class="control-label">Metodo Pago</label>
                                             <select class="form-control" v-model='venta.metodo'>
                                                 <option v-for="(value, key) in metodosPago"
                                                         :value="value.id_metodo_pago" :key="key">{{ value.nombre }}
@@ -306,7 +306,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group ">
-                                                        <label class="control-label">Emisión</label>
+                                                        <label class="control-label">Emision</label>
                                                         <div class="col-lg-12">
                                                             <input v-model="venta.fecha" type="date"
                                                                    placeholder="dd/mm/aaaa" name="input_fecha"
@@ -328,7 +328,7 @@
                                         </div>
                                     </div>
                                     <div v-if="venta.tipo_pago=='2'" class="form-group ">
-                                        <label class="control-label">Días de pago</label>
+                                        <label class="control-label">Dias de pago</label>
                                         <div class="col-lg-12">
                                             <input @focus="focusDiasPagos" v-model="venta.dias_pago" type="text"
                                                    class="form-control text-center">
@@ -362,7 +362,7 @@
                                     <div class="form-group  mb-3">
                                         <div class="col-lg-12">
                                             <div class="input-group">
-                                                <input v-model="venta.dir_cli" type="text" placeholder="Dirección 1"
+                                                <input v-model="venta.dir_cli" type="text" placeholder="Direccion 1"
                                                        class="form-control ui-autocomplete-input" autocomplete="off">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -376,7 +376,7 @@
                                     <div class="form-group  mb-3">
                                         <div class="col-lg-12">
                                             <div class="input-group">
-                                                <input v-model="venta.dir2_cli" type="text" placeholder="Dirección 2"
+                                                <input v-model="venta.dir2_cli" type="text" placeholder="Direccion 2"
                                                        class="form-control ui-autocomplete-input" autocomplete="off">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -430,7 +430,7 @@
                                             Pago</label>
                                     </div>
                                     <div v-if="venta.segundoPago" class="col-md-12 form-group">
-                                        <label class="control-label">Método Pago</label>
+                                        <label class="control-label">Metodo Pago</label>
                                         <select class="form-control" v-model='venta.metodo2'>
                                             <option v-for="(value, key) in metodosPago" :value="value.id_metodo_pago"
                                                     :key="key">{{ value.nombre }}
@@ -491,7 +491,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="">
-                                <label class="form-label">Fecha Emisión</label>
+                                <label class="form-label">Fecha Emision</label>
                                 <input v-model="venta.fecha" disabled type="date" class="form-control">
                             </div>
                         </div>
@@ -503,10 +503,10 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Días de pagos</label>
+                        <label class="form-label">Dias de pagos</label>
                         <input placeholder="10,20,30,........" v-model="venta.dias_pago" @keypress="onlyNumberComas"
                                type="text" class="form-control">
-                        <div class="form-text">Separar por comas los días de pagos</div>
+                        <div class="form-text">Separar por comas los dias de pagos</div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -1249,12 +1249,12 @@
 								if (this.venta.tipo_pago == 2) {
 									if (this.venta.dias_lista.length == 0) {
 										continuar = false;
-										mensaje = 'Debe especificar los días de pagos para un venta a crédito';
+										mensaje = 'Debe especificar los dias de pagos para un venta a credito';
 									}
 								}
 							} else if (this.venta.tipo_doc == '2') {
 								if (this.venta.nom_cli.length < 5) {
-									mensaje = 'Debe escribir la Razón Social o dar al botón para buscar el ruc';
+									mensaje = 'Debe escribir la Razon Social o dar al boton para buscar el ruc';
 									continuar = false;
 								}
 								if (this.venta.num_doc.length != 11) {
@@ -1265,7 +1265,7 @@
 								if (this.venta.tipo_pago == 2) {
 									if (this.venta.dias_lista.length == 0) {
 										continuar = false;
-										mensaje = 'Debe especificar los días de pagos para un venta a crédito';
+										mensaje = 'Debe especificar los dias de pagos para un venta a credito';
 									}
 								}
 

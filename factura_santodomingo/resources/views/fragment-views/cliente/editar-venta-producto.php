@@ -171,7 +171,7 @@ if (isset($_GET["coti"])) {
                                             </select>
                                         </div>
                                         <div class="col-md-12 form-group">
-                                            <label class="control-label">Método Pago</label>
+                                            <label class="control-label">Metodo Pago</label>
                                             <select class="form-control" v-model='venta.metodo'>
                                                 <option v-for="(value, key) in metodosPago" :value="value.id_metodo_pago" :key="key">{{ value.nombre }}</option>
 
@@ -348,7 +348,7 @@ if (isset($_GET["coti"])) {
                     <div class="mb-3">
                         <label class="form-label">Dias de pagos</label>
                         <input placeholder="10,20,30,........" v-model="venta.dias_pago" @keypress="onlyNumberComas" type="text" class="form-control">
-                        <div class="form-text">Separe por comas los días de pagos</div>
+                        <div class="form-text">Separe por comas los dias de pagos</div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -744,12 +744,12 @@ if (isset($_GET["coti"])) {
                             if (this.venta.tipo_pago == 2) {
                                 if (this.venta.dias_lista.length == 0) {
                                     continuar = false;
-                                    mensaje = 'Debe especificar los días de pagos para un venta a crédito';
+                                    mensaje = 'Debe especificar los dias de pagos para un venta a credito';
                                 }
                             }
                         } else if (this.venta.tipo_doc == '2') {
                             if (this.venta.nom_cli.length < 5) {
-                                mensaje = 'Debe escribir la Razón Social o dar al botón para buscar el ruc';
+                                mensaje = 'Debe escribir la Razon Social o dar al boton para buscar el ruc';
                                 continuar = false;
                             }
                             if (this.venta.num_doc.length != 11) {
@@ -760,7 +760,7 @@ if (isset($_GET["coti"])) {
                             if (this.venta.tipo_pago == 2) {
                                 if (this.venta.dias_lista.length == 0) {
                                     continuar = false;
-                                    mensaje = 'Debe especificar los días de pagos para un venta a crédito';
+                                    mensaje = 'Debe especificar los dias de pagos para un venta a credito';
                                 }
                             }
 

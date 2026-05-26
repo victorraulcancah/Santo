@@ -6,3 +6,4 @@ define('PATH_SRC', './src/');
 define('PATH_ROUTES', './routes/');
 define('PATH_CONTROLLERS', './app/http/controllers/');
 define('PATH_VIEWS', './resources/views/');
+

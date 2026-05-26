@@ -1,0 +1,41 @@
+[2026-05-26 07:04:13] POST recibido:
+Array
+(
+    [usuario_id] => 44
+    [usuario] => 44
+    [id_rol] => 2
+    [email] => hectormayta@gmail.com
+    [nombres] => HECTOR ODON
+    [apellidos] => MAYTA SIERRA
+    [num_doc] => 42869048
+    [direccion] => FUNDO SANTA ADELA S/N NUEVO IMPERIAL
+    [telefono] => 930570018
+    [tipo_sueldo] => 2
+    [monto_sueldo_fijo] => 3
+    [porcentaje_sueldo_comision] => 0
+    [meta_ventas] => 0.00
+    [porcentaje_comision_meta] => 0.00
+)
+
+----
+requestData:
+Array
+(
+    [usuario_id] => 44
+    [usuario] => 44
+    [id_rol] => 2
+    [email] => hectormayta@gmail.com
+    [nombres] => HECTOR ODON
+    [apellidos] => MAYTA SIERRA
+    [num_doc] => 42869048
+    [direccion] => FUNDO SANTA ADELA S/N NUEVO IMPERIAL
+    [telefono] => 930570018
+    [tipo_sueldo] => 2
+    [monto_sueldo_fijo] => 3
+    [porcentaje_sueldo_comision] => 0
+    [meta_ventas] => 0.00
+    [porcentaje_comision_meta] => 0.00
+    [id_empresa] => 12
+)
+
+----

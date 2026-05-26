@@ -196,7 +196,7 @@
             })
 
             swalWithBootstrapButtons.fire({
-                title: "¿Se canceló la cuota del esta venta",
+                title: "Se cancelo la cuota del esta venta",
 
                 icon: 'warning',
                 showCancelButton: true,
@@ -215,7 +215,7 @@
                     })
                     swalWithBootstrapButtons.fire(
                         'Bien',
-                        'La cuota se canceló',
+                        'La cuota se cancelo',
                         'success'
                     )
                 } else if (

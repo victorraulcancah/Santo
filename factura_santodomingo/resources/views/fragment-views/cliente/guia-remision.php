@@ -11,10 +11,10 @@ $c_guia->setIdEmpresa($_SESSION['id_empresa']);
 <div class="page-title-box">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h6 class="page-title">Guía Remisión</h6>
+            <h6 class="page-title">Guia Remision</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturación</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Guía Remisión</li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturacion</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Guia Remision</li>
             </ol>
         </div>
         <div class="col-md-4">
@@ -47,7 +47,7 @@ $c_guia->setIdEmpresa($_SESSION['id_empresa']);
                 <h4 class="card-title"></h4>
 
                 <div class="card-title-desc">
-                    <a href="/guia/remision/registrar" class="btn btn-primary button-link"><i class="fa fa-plus"></i> Crear Guía de Remisión</a>
+                    <a href="/guia/remision/registrar" class="btn btn-primary button-link"><i class="fa fa-plus"></i> Crear Guia de Remision</a>
 
                 </div>
                 <table id="datatable" class="table table-bordered dt-responsive nowrap text-center table-sm" style="border-collapse: collapse; border-spacing: 0; width: 100%;">

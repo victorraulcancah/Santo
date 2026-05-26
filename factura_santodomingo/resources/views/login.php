@@ -3,7 +3,7 @@
 <html lang="es">
 
 <head>
-    <title>Hatuna - Facturación Electrónica</title>
+    <title>Hatuna - Facturacion Electronica</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -190,20 +190,20 @@ position: fixed;
                 <img src="<?= URL::to('public/login/images/logo.svg') ?>" style="max-width: 235px;">
                 </span>
                 <div class="wrap-input100 validate-input m-b-23"
-                     data-validate="Se requiere usuario o correo electrónico">
+                     data-validate="Se requiere usuario o correo electronico">
                     <span class="label-input100">Usuario / Email</span>
                     <input class="input100" type="text"  required name="user"
-                           placeholder="Escribe tu usuario o correo electrónico">
+                           placeholder="Escribe tu usuario o correo electronico">
                     <span class="focus-input100" data-symbol="&#xf206;"></span>
                 </div>
-                <div class="wrap-input100 validate-input" data-validate="Se requere contraseña">
-                    <span class="label-input100">Contraseña</span>
-                    <input class="input100" type="password"  required name="clave" placeholder="Escribe tu contraseña">
+                <div class="wrap-input100 validate-input" data-validate="Se requere contrasena">
+                    <span class="label-input100">Contrasena</span>
+                    <input class="input100" type="password"  required name="clave" placeholder="Escribe tu contrasena">
                     <span class="focus-input100" data-symbol="&#xf190;"></span>
                 </div>
                 <div class="text-right p-t-8 p-b-31">
                     <a href="#">
-    ¿Olvidaste tu contraseña?
+    Olvidaste tu contrasena?
                     </a>
                 </div>
                 <div class="container-login100-form-btn">

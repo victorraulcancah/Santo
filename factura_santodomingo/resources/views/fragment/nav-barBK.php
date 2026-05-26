@@ -26,12 +26,12 @@
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="ti-package"></i>
-                            <span>FACTURACIÓN</span>
+                            <span>FACTURACION</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
                             <li><a href="/ventas" class=" menu-link">Ventas</a></li>
-                            <li><a href="/guias/remision" class=" menu-link">Guías Remisión</a></li>
-                            <li><a href="/nota/electronica/lista" class=" menu-link">Notas Electrónicas</a></li>
+                            <li><a href="/guias/remision" class=" menu-link">Guias Remision</a></li>
+                            <li><a href="/nota/electronica/lista" class=" menu-link">Notas Electronicas</a></li>
                         </ul>
                     </li>
 
@@ -74,7 +74,7 @@
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="ti-view-grid"></i>
-                            <span>ALMACÉN</span>
+                            <span>ALMACEN</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
                             <li><a href="/almacen/productos" class=" menu-link">Kardex</a></li>

@@ -103,9 +103,12 @@ class CotizacionesController extends Controller
         $data["cliente_dir2"] = $clienteR['direccion2'] ? $clienteR['direccion2'] : '';
 
         $data["productos"] = [];
-        $sql = "SELECT p.codigo,pc.id_producto,pc.cantidad,p.descripcion,p.codsunat,p.precio,p.precio2,p.precio3,p.costo,pc.precio AS precioVenta,p.precio4,p.precio_unidad,pc.serie
+        $sql = "SELECT p.codigo,pc.id_producto,pc.cantidad,p.descripcion,p.codsunat,p.precio,p.precio2,p.precio3,p.costo,pc.precio AS precioVenta,p.precio4,p.precio_unidad,pc.serie,
+                p.unidades_por_caja, p.volumen_unidad, p.id_unidad_derivada,
+                ud.nombre AS unidad_derivada_nombre
         FROM productos_cotis pc
         JOIN productos p ON p.id_producto = pc.id_producto
+        LEFT JOIN unidades_derivadas ud ON p.id_unidad_derivada = ud.id_unidad
         WHERE pc.id_coti = '$cotizacion'";
         $productosR = $this->conexion->query($sql);
 
@@ -130,6 +133,11 @@ class CotizacionesController extends Controller
                 "precio_usado" =>  $data['usar_precio'],
 		    "serie" =>  $pro['serie'],
 		    "serie_producto" =>  $pro['serie'],
+                "unidades_por_caja" => intval($pro['unidades_por_caja'] ?? 1),
+                "volumen_unidad" => $pro['volumen_unidad'] ?? '',
+                "id_unidad_derivada" => $pro['id_unidad_derivada'] ?? null,
+                "unidad_derivada_nombre" => $pro['unidad_derivada_nombre'] ?? '',
+                "presentacion" => 'unidad',
 
             ];
         }

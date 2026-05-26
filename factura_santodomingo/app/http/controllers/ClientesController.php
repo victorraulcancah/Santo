@@ -33,6 +33,11 @@ class ClientesController extends Controller
             $datos = $item['datos'];
             $direccion = $item['direccion'];
             $direccion2 = $item['direccion2'];
+            $departamento = isset($item['departamento']) ? $item['departamento'] : null;
+            $provincia = isset($item['provincia']) ? $item['provincia'] : null;
+            $distrito = isset($item['distrito']) ? $item['distrito'] : null;
+            $fecha_nacimiento = isset($item['fecha_nacimiento']) ? $item['fecha_nacimiento'] : null;
+            
             $sql = "INSERT into clientes set datos=?,
   documento='{$item['documento']}',
   direccion=?,
@@ -40,10 +45,14 @@ class ClientesController extends Controller
   email='{$item['email']}',
   id_empresa='{$_SESSION['id_empresa']}',
   telefono='{$item['telefono']}',
-  telefono2='{$item['telefono2']}'";
+  telefono2='{$item['telefono2']}',
+  departamento=?,
+  provincia=?,
+  distrito=?,
+  fecha_nacimiento=?";
 
             $stmt = $this->conectar->prepare($sql);
-            $stmt->bind_param('sss', $datos, $direccion, $direccion2);
+            $stmt->bind_param('sssssss', $datos, $direccion, $direccion2, $departamento, $provincia, $distrito, $fecha_nacimiento);
             if ($stmt->execute()) {
                 $respuesta["res"] = true;
             }
@@ -57,6 +66,10 @@ class ClientesController extends Controller
             $datosAgregar = trim(filter_var($_POST['datosAgregar'], FILTER_SANITIZE_STRING));
             $direccionAgregar = trim(filter_var($_POST['direccionAgregar'], FILTER_SANITIZE_STRING));
             $direccionAgregar2 = trim(filter_var($_POST['direccionAgregar2'], FILTER_SANITIZE_STRING));
+            $departamentoAgregar = isset($_POST['departamentoAgregar']) ? trim(filter_var($_POST['departamentoAgregar'], FILTER_SANITIZE_STRING)) : null;
+            $provinciaAgregar = isset($_POST['provinciaAgregar']) ? trim(filter_var($_POST['provinciaAgregar'], FILTER_SANITIZE_STRING)) : null;
+            $distritoAgregar = isset($_POST['distritoAgregar']) ? trim(filter_var($_POST['distritoAgregar'], FILTER_SANITIZE_STRING)) : null;
+            $fecha_nacimientoAgregar = isset($_POST['fecha_nacimientoAgregar']) && !empty($_POST['fecha_nacimientoAgregar']) ? trim(filter_var($_POST['fecha_nacimientoAgregar'], FILTER_SANITIZE_STRING)) : null;
             $telefonoAgregar = trim(filter_var($_POST['telefonoAgregar'], FILTER_SANITIZE_NUMBER_INT));
             $telefonoAgregar2 = trim(filter_var($_POST['telefonoAgregar2'], FILTER_SANITIZE_NUMBER_INT));
             $direccion = trim(filter_var($_POST['direccion'], FILTER_VALIDATE_EMAIL, FILTER_SANITIZE_EMAIL));
@@ -70,6 +83,10 @@ class ClientesController extends Controller
                     $this->cliente->setDatos($datosAgregar);
                     $this->cliente->setDireccion($direccionAgregar);
                     $this->cliente->setDireccion2($direccionAgregar2);
+                    $this->cliente->setDepartamento($departamentoAgregar);
+                    $this->cliente->setProvincia($provinciaAgregar);
+                    $this->cliente->setDistrito($distritoAgregar);
+                    $this->cliente->setFechaNacimiento($fecha_nacimientoAgregar);
                     $this->cliente->setTelefono($telefonoAgregar);
                     $this->cliente->setTelefono2($telefonoAgregar2);
                     $this->cliente->setEmail($direccion);
@@ -121,6 +138,10 @@ class ClientesController extends Controller
             $datosEditar = trim(filter_var($_POST['datosEditar'], FILTER_SANITIZE_STRING));
             $direccionEditar = trim(filter_var($_POST['direccionEditar'], FILTER_SANITIZE_STRING));
             $direccionEditar2 = trim(filter_var($_POST['direccionEditar2'], FILTER_SANITIZE_STRING));
+            $departamentoEditar = isset($_POST['departamentoEditar']) ? trim(filter_var($_POST['departamentoEditar'], FILTER_SANITIZE_STRING)) : null;
+            $provinciaEditar = isset($_POST['provinciaEditar']) ? trim(filter_var($_POST['provinciaEditar'], FILTER_SANITIZE_STRING)) : null;
+            $distritoEditar = isset($_POST['distritoEditar']) ? trim(filter_var($_POST['distritoEditar'], FILTER_SANITIZE_STRING)) : null;
+            $fecha_nacimientoEditar = isset($_POST['fecha_nacimientoEditar']) && !empty($_POST['fecha_nacimientoEditar']) ? trim(filter_var($_POST['fecha_nacimientoEditar'], FILTER_SANITIZE_STRING)) : null;
             $telefonoEditar = trim(filter_var($_POST['telefonoEditar'], FILTER_SANITIZE_STRING));
             $telefonoEditar2 = trim(filter_var($_POST['telefonoEditar2'], FILTER_SANITIZE_STRING));
             $emailEditar = trim(filter_var($_POST['emailEditar'], FILTER_SANITIZE_EMAIL));
@@ -137,6 +158,10 @@ class ClientesController extends Controller
                     $this->cliente->setDatos($datosEditar);
                     $this->cliente->setDireccion($direccionEditar);
                     $this->cliente->setDireccion2($direccionEditar2);
+                    $this->cliente->setDepartamento($departamentoEditar);
+                    $this->cliente->setProvincia($provinciaEditar);
+                    $this->cliente->setDistrito($distritoEditar);
+                    $this->cliente->setFechaNacimiento($fecha_nacimientoEditar);
                     $this->cliente->setTelefono($telefonoEditar);
                     $this->cliente->setTelefono2($telefonoEditar2);
                     $this->cliente->setEmail($emailEditar);
@@ -194,12 +219,20 @@ class ClientesController extends Controller
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
             }
 
-            $reader->setReadDataOnly(true);
             $spreadsheet = $reader->load("files/temp/" . $nombre_logo);
 
-            $schdeules = $spreadsheet->getActiveSheet()->toArray();
-            // array_shift($schdeules);
-            $respuesta["data"] = $schdeules;
+            $worksheet = $spreadsheet->getActiveSheet();
+            $data = [];
+            foreach ($worksheet->getRowIterator() as $row) {
+                $rowData = [];
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(false);
+                foreach ($cellIterator as $cell) {
+                    $rowData[] = $cell->getFormattedValue();
+                }
+                $data[] = $rowData;
+            }
+            $respuesta["data"] = $data;
 
             unlink($location);
             //return $schdeules;
@@ -212,4 +245,52 @@ class ClientesController extends Controller
     /*   public function importAdd(){
         echo json_encode($_POST);
     } */
+
+    public function exportarExcel()
+    {
+        $getAll = $this->cliente->getAllData();
+        
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        
+        // Cabeceras
+        $sheet->setCellValue('A1', 'Documento');
+        $sheet->setCellValue('B1', 'Nombres/Razon Social');
+        $sheet->setCellValue('C1', 'Direccion');
+        $sheet->setCellValue('D1', 'Direccion Llegada');
+        $sheet->setCellValue('E1', 'Telefono 1');
+        $sheet->setCellValue('F1', 'Telefono 2');
+        $sheet->setCellValue('G1', 'Email');
+        $sheet->setCellValue('H1', 'Departamento');
+        $sheet->setCellValue('I1', 'Provincia');
+        $sheet->setCellValue('J1', 'Distrito');
+        $sheet->setCellValue('K1', 'Fecha Nacimiento');
+
+        // Datos
+        $fila = 2;
+        foreach ($getAll as $c) {
+            $cFull = current($this->cliente->getOne($c['id_cliente'])) ?: [];
+            if(empty($cFull)) continue;
+            
+            $sheet->setCellValue('A' . $fila, $cFull['documento'] ?? '');
+            $sheet->setCellValue('B' . $fila, $cFull['datos'] ?? '');
+            $sheet->setCellValue('C' . $fila, $cFull['direccion'] ?? '');
+            $sheet->setCellValue('D' . $fila, $cFull['direccion2'] ?? '');
+            $sheet->setCellValue('E' . $fila, $cFull['telefono'] ?? '');
+            $sheet->setCellValue('F' . $fila, $cFull['telefono2'] ?? '');
+            $sheet->setCellValue('G' . $fila, $cFull['email'] ?? '');
+            $sheet->setCellValue('H' . $fila, $cFull['departamento'] ?? '');
+            $sheet->setCellValue('I' . $fila, $cFull['provincia'] ?? '');
+            $sheet->setCellValue('J' . $fila, $cFull['distrito'] ?? '');
+            $sheet->setCellValue('K' . $fila, $cFull['fecha_nacimiento'] ?? '');
+            $fila++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="clientes_export.xlsx"');
+        $writer->save('php://output');
+        exit;
+    }
 }

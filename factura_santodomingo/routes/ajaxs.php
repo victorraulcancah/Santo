@@ -34,6 +34,7 @@
     Route::post("/ajs/venta/detalle", "VentasController@detalleVenta")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/venta/consultas/tipo/venta", "VentasController@tipoVenta")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/venta/anular", "VentasController@anularVenta")->Middleware([ValidarTokenMiddleware::class]);
+    Route::post("/ajs/consulta/lista/departamentos", "ConsultasController@listarDepartamentos")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/consulta/lista/provincias", "ConsultasController@listarProvincias")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/consulta/lista/distrito", "ConsultasController@listarDistri")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/consulta/guia/documentofb", "ConsultasController@consultvfb")->Middleware([ValidarTokenMiddleware::class]);
@@ -41,6 +42,8 @@
 
     Route::post("/ajs/guia/remision/coti/:id", "ConsultasController@consultarGuiaXCoti")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/guia/remision/coti/cliente/:id", "ConsultasController@consultarGuiaXCotiCliente")->Middleware([ValidarTokenMiddleware::class]);
+
+    Route::post("/ajs/consulta/ventas/vendedor", "ConsultasController@ventasVendedor")->Middleware([ValidarTokenMiddleware::class]);
 
     Route::post('/ajs/guia/remision/add', "GuiaRemisionController@insertar")->Middleware([ValidarTokenMiddleware::class]);
     Route::post('/ajs/guia/remision/add2', "GuiaRemisionController@insertar2")->Middleware([ValidarTokenMiddleware::class]);
@@ -85,6 +88,7 @@
 
 //importal excel
     Route::post("/ajs/clientes/add/exel", "ClientesController@importarExcel")->Middleware([ValidarTokenMiddleware::class]);
+    Route::get("/ajs/clientes/exportar", "ClientesController@exportarExcel")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/cuentas/cobrar", "ClientesController@cuentasCobrar")->Middleware([ValidarTokenMiddleware::class]);
     Route::post("/ajs/cuentas/cobrar/estado", "ClientesController@cuentasCobrarEstado")->Middleware([ValidarTokenMiddleware::class]);
 

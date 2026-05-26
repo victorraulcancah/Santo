@@ -5,10 +5,10 @@ $c_ubigeo = new Ubigeo();
 <div class="page-title-box">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h6 class="page-title">Guía Remisión</h6>
+            <h6 class="page-title">Guia Remision</h6>
             <ol class="breadcrumb m-0">
                 <li class="breadcrumb-item"><a href="javascript: void(0);">Ventas</a></li>
-                <li class="breadcrumb-item"><a href="/ventas" class="button-link">Guía Remisión</a></li>
+                <li class="breadcrumb-item"><a href="/ventas" class="button-link">Guia Remision</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Productos</li>
             </ol>
         </div>
@@ -67,7 +67,7 @@ $c_ubigeo = new Ubigeo();
                                         </div>
                                     </div>
                                     <hr>
-                                    <h5>Datos de la Guía</h5>
+                                    <h5>Datos de la Guia</h5>
                                     <div class="form-group row mb-3">
                                         <label class="col-md-4 control-label text-end">Doc.</label>
                                         <div class="col-md-8">
@@ -178,9 +178,9 @@ $c_ubigeo = new Ubigeo();
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
-                                        <label class="col-lg-2 control-label">Vehículo</label>
+                                        <label class="col-lg-2 control-label">Vehiculo</label>
                                         <div class="col-lg-3">
-                                            <input placeholder="Placa Vehículo" type="text" class="form-control" maxlength="7" v-model="transporte.veiculo" id="input_vehiculo">
+                                            <input placeholder="Placa Vehiculo" type="text" class="form-control" maxlength="7" v-model="transporte.veiculo" id="input_vehiculo">
                                         </div>
                                     </div>
                                     <div class="form-group  row mb-3">
@@ -196,7 +196,7 @@ $c_ubigeo = new Ubigeo();
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button @click="registerGuia" type="button" class="btn btn-success" id="btn_graba_guia"><i class="fa fa-save"></i> Generar Guía</button>
+                            <button @click="registerGuia" type="button" class="btn btn-success" id="btn_graba_guia"><i class="fa fa-save"></i> Generar Guia</button>
                         </div>
                     </div>
                 </div>
@@ -281,12 +281,12 @@ $c_ubigeo = new Ubigeo();
                                     </div>
                                 </div> -->
 
-                                    <h5>Datos de la Guía de la Cotizacion N° <?php echo $_GET['coti'] ?></h5>
+                                    <h5>Datos de la Guia de la Cotizacion No <?php echo $_GET['coti'] ?></h5>
                                     <br>
                                     <div class="form-group row mb-3">
                                         <label class="col-md-4 control-label text-end">Doc.</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control text-center" value="GUÍA DE REMISIÓN" readonly name="input_doc_envio">
+                                            <input type="text" class="form-control text-center" value="GUIA DE REMISION" readonly name="input_doc_envio">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
@@ -393,9 +393,9 @@ $c_ubigeo = new Ubigeo();
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
-                                        <label class="col-lg-2 control-label">Vehículo</label>
+                                        <label class="col-lg-2 control-label">Vehiculo</label>
                                         <div class="col-lg-3">
-                                            <input placeholder="Placa Vehículo" type="text" class="form-control" maxlength="7" v-model="transporte.veiculo" id="input_vehiculo">
+                                            <input placeholder="Placa Vehiculo" type="text" class="form-control" maxlength="7" v-model="transporte.veiculo" id="input_vehiculo">
                                         </div>
                                     </div>
                                     <div class="form-group  row mb-3">
@@ -411,7 +411,7 @@ $c_ubigeo = new Ubigeo();
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button @click="registerGuiaCoti" type="button" class="btn btn-success" id="btn_graba_guia"><i class="fa fa-save"></i> Generar Guía</button>
+                            <button @click="registerGuiaCoti" type="button" class="btn btn-success" id="btn_graba_guia"><i class="fa fa-save"></i> Generar Guia</button>
                         </div>
                     </div>
                 </div>
@@ -565,7 +565,7 @@ $c_ubigeo = new Ubigeo();
                         data,
                         function(resp) {
                             if (resp.res) {
-                                alertExito("Guía Remisión Registrada")
+                                alertExito("Guia Remision Registrada")
                                     .then(function() {
                                         $("#backbuttonvp").click();
                                     })

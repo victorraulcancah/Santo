@@ -51,7 +51,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        © <script>document.write(new Date().getFullYear())</script> Facturación Hatuna 1.0 <span class="d-none d-sm-inline-block"> - Creado por <a href="https://magustechnologies.com/" target="_blank"> Magus Technologies</a></span>
+                        © <script>document.write(new Date().getFullYear())</script> Facturacion Hatuna 1.0 <span class="d-none d-sm-inline-block"> - Creado por <a href="https://magustechnologies.com/" target="_blank"> Magus Technologies</a></span>
                     </div>
                 </div>
             </div>

@@ -70,8 +70,8 @@ $getAll = $c_venta->ingresosEgresosRender();
                                     } ?>
                                     <td><?php echo $tipo ?></td>
 
-                                    <td> <?php echo $row['almacen_egreso'] == 2 ? "Tienda 1" : "Almacén 1"  ?></td>
-                                    <td> <?php echo $row['almacen_ingreso'] == 2 ? "Tienda 1" : "Almacén 1" ?></td>
+                                    <td> <?php echo $row['almacen_egreso'] == 2 ? "Tienda 1" : "Almacen 1"  ?></td>
+                                    <td> <?php echo $row['almacen_ingreso'] == 2 ? "Tienda 1" : "Almacen 1" ?></td>
                                     <td class="text-center" width="auto">
                                         <?php
                                         if ($row['tipo'] == 'e' && $row['estado'] == '0') : ?>
@@ -120,7 +120,7 @@ $getAll = $c_venta->ingresosEgresosRender();
 
                             </div>
                             <div class="mb-3">
-                                <label class="control-label">Descripción</label>
+                                <label class="control-label">Descripcion</label>
                                 <input required v-model="producto.descripcion" type="text" placeholder="Descripcion" class="form-control" readonly="true">
                             </div>
                             <div class="mb-3 col-md-3">
@@ -128,7 +128,7 @@ $getAll = $c_venta->ingresosEgresosRender();
                                 <input required v-model="producto.cantidad" type="text" class="form-control" @keypress="onlyNumber">
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label class="control-label">Ingreso Almacén</label>
+                                <label class="control-label">Ingreso Almacen</label>
                                 <select class="form-control" @change="onChangeAlmacenNuevoIngreso($event)">
                                     <option v-for="item in listaAlmacenes" :value="item.id">{{item.name}}</option>
                                 </select>
@@ -166,9 +166,9 @@ $getAll = $c_venta->ingresosEgresosRender();
 
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label class="control-label">Del Almacén</label>
+                                <label class="control-label">Del Almacen</label>
                                 <select name="delAlmacen" id="delAlmacen" v-model="producto.almacen" class="form-control" @change="onChangeAlmacen($event)">
-                                    <option v-if="producto.almacen==1" value="1">Almacén 1</option>
+                                    <option v-if="producto.almacen==1" value="1">Almacen 1</option>
                                     <option v-else value="2">Tienda 1</option>
                                 </select>
                             </div>
@@ -181,10 +181,10 @@ $getAll = $c_venta->ingresosEgresosRender();
                                 <input required v-model="producto.cantidad" type="text" class="form-control" @keypress="onlyNumber">
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label class="control-label">Al Almacén</label>
+                                <label class="control-label">Al Almacen</label>
                                 <select name="" id="" v-model="producto.alAlmacen" class="form-control">
                                     <option v-if="producto.almacen==1" value="2" selected>Tienda 1</option>
-                                    <option v-else value="1">Almacén 1</option>
+                                    <option v-else value="1">Almacen 1</option>
 
 
                                 </select>

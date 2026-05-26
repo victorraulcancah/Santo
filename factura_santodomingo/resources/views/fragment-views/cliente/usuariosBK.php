@@ -62,14 +62,14 @@
                                             <th>ID</th>
                                             <th>Empresa</th>
                                             <th>Rol</th>
-                                            <th>Número de Documento</th>
+                                            <th>Numero de Documento</th>
                                             <th>Usuario</th>
                                             <th>Email</th>
                                             <th>Nombres</th>
                                             <th>Apellidos</th>
                                             <th>Rubro</th>
                                             <th>Sucursal</th>
-                                            <th>Teléfono</th>
+                                            <th>Telefono</th>
                                             <th>Token de Reset</th>
                                             <th>Estado</th>
                                             <th>Mensaje</th>
@@ -201,7 +201,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="telefonoAgregar">Teléfono</label>
+                                                <label for="telefonoAgregar">Telefono</label>
                                                 <input type="number" class="form-control" id="telefonoAgregar"
                                                        name="telefono">
                                             </div>
@@ -211,7 +211,7 @@
                                                        name="email">
                                             </div>
                                             <div class="col-md-12 mt-3">
-                                                <label for="direccionAgregar">Dirección</label>
+                                                <label for="direccionAgregar">Direccion</label>
                                                 <input type="text" class="form-control" id="direccionAgregar"
                                                        name="direccion">
                                             </div>
@@ -321,7 +321,7 @@
                                     <th>Apellidos</th>
                                     <th>Rubro</th>
                                     <!--<th>Sucursal</th>-->
-                                    <th>Teléfono</th>
+                                    <th>Telefono</th>
                                     <th>Creado</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -489,7 +489,7 @@
 					let data = JSON.parse(resp);
 					if (typeof data === "object") {
 						tabla_usuarios.ajax.reload(null, false);
-						Swal.fire("¡Buen trabajo!", "Registro Exitoso", "success");
+						Swal.fire("Buen trabajo!", "Registro Exitoso", "success");
 						$("#agregarModal").modal("hide");
 						$("body").removeClass("modal-open");
 						$("#frmClientesAgregar").trigger("reset");
@@ -512,7 +512,7 @@
 			$("#editarModal").modal("show");
 			$("#editarModal")
 				.find(".modal-title")
-				.text("Editar Usuario N°" + id);
+				.text("Editar Usuario No" + id);
 			$.ajax({
 				url: _URL + "/ajs/usuarios/get",
 				data: {
@@ -559,7 +559,7 @@
 					console.log(data);
 					if (Array.isArray(data)) {
 						tabla_usuarios.ajax.reload(null, false);
-						Swal.fire("¡Buen trabajo!", "Actualización exitosa", "success");
+						Swal.fire("Buen trabajo!", "Actualizacion exitosa", "success");
 						$("#editarModal").modal("hide");
 						$("body").removeClass("modal-open");
 					} else {
@@ -579,7 +579,7 @@
 				id: id,
 			};
 			Swal.fire({
-				title: "¿Deseas borrar el registro?",
+				title: "Deseas borrar el registro?",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
@@ -595,7 +595,7 @@
 							/* console.log(resp); */
 							tabla_usuarios.ajax.reload(null, false);
 							Swal.fire(
-								"¡Buen trabajo!",
+								"Buen trabajo!",
 								"Registro Borrado Exitosamente",
 								"success"
 							);

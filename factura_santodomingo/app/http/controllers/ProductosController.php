@@ -22,6 +22,7 @@ class ProductosController extends Controller
         require_once "app/clases/serverside.php";
         header('Pragma: no-cache');
         header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Content-Type: application/json; charset=utf-8');
 
         $almacen = $_GET['almacenId'] ?? null;
         $stockF = $_GET['stockF'] ?? null;
@@ -202,8 +203,8 @@ class ProductosController extends Controller
             "aaData" => $data,
             "tcosto" => 0,
         ];
-        header('Content-Type: application/json');
-        echo json_encode($response);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
 
         // $table_data = new TableData();
         // if ($almacen == '1') {
@@ -551,6 +552,10 @@ class ProductosController extends Controller
             $precioMenor = floatval($_POST['precioMenor'] ?? 0);
             $marca = $_POST['marca'] ?? '';
             $codSunat = $_POST['codSunat'] ?? '';
+            $unidadesPorCaja = max(1, intval($_POST['unidades_por_caja'] ?? 1));
+            $volumenUnidad = $this->conexion->real_escape_string($_POST['volumen_unidad'] ?? '');
+            $idUnidadDerivadaRaw = $_POST['id_unidad_derivada'] ?? '';
+            $idUnidadDerivada = ($idUnidadDerivadaRaw === '' || $idUnidadDerivadaRaw === null || $idUnidadDerivadaRaw === 'null') ? 'NULL' : intval($idUnidadDerivadaRaw);
 
             // 2. Llamada a la API Externa
             $url = 'https://xn--viasantodomingo-zqb.com/public_html/testapi/RestProducto.php';
@@ -614,14 +619,16 @@ class ProductosController extends Controller
             $desc_esc = $this->conexion->real_escape_string($requestData->descripcicon);
             $razon_esc = $this->conexion->real_escape_string($razon);
 
-            $sql = "INSERT INTO productos SET 
+            $sql = "INSERT INTO productos SET
                 descripcion = '$desc_esc', precio = '$precio', precio_unidad = '$precio', costo = '$costo',
                 almacen = '{$_POST['almacen']}', cantidad = '$cantidad', iscbp = '{$_POST['afecto']}',
                 sucursal = '{$_SESSION['sucursal']}', id_empresa = '{$_SESSION['id_empresa']}',
                 ultima_salida = '1000-01-01', codsunat = '$idfiltro', prod_cod = '$rest',
                 marca = '$marca', precio_mayor = $precioMayor, precio_menor = $precioMenor,
                 razon_social = '$razon_esc', ruc = '$ruc', serie_producto = '{$_POST['serie_producto']}',
-                codigo = '$desc_esc'";
+                codigo = '$desc_esc',
+                unidades_por_caja = '$unidadesPorCaja', volumen_unidad = '$volumenUnidad',
+                id_unidad_derivada = $idUnidadDerivada";
 
             $resultado = $this->modelo->insert($sql);
 
@@ -646,6 +653,10 @@ class ProductosController extends Controller
         $descripcion = $_POST['descripcicon'] ?? '';
         $codigoProd = $_POST['codigo'];
         $_POST['marca'] = $_POST['marca'] ?? '';
+        $unidadesPorCaja = max(1, intval($_POST['unidades_por_caja'] ?? 1));
+        $volumenUnidad = $this->conexion->real_escape_string($_POST['volumen_unidad'] ?? '');
+        $idUnidadDerivadaRaw = $_POST['id_unidad_derivada'] ?? '';
+        $idUnidadDerivada = ($idUnidadDerivadaRaw === '' || $idUnidadDerivadaRaw === null || $idUnidadDerivadaRaw === 'null') ? 'NULL' : intval($idUnidadDerivadaRaw);
         $sql = "select * from productos where id_producto='{$_POST['cod']}'";
         $result = $this->conexion->query($sql);
         if ($row = $result->fetch_assoc()) {
@@ -659,7 +670,9 @@ class ProductosController extends Controller
                   precio_menor='{$_POST['precioMenor']}',
                   razon_social='{$_POST['razon']}',
                   ruc='{$_POST['ruc']}',
-                   codigo='$descripcion'
+                   codigo='$descripcion',
+                  unidades_por_caja='$unidadesPorCaja', volumen_unidad='$volumenUnidad',
+                  id_unidad_derivada=$idUnidadDerivada
                   where id_producto='{$_POST['cod']}'";
             #console($descripcion);
             #console($codigoProd);
@@ -688,7 +701,9 @@ class ProductosController extends Controller
                      cod_barra='',
                      usar_barra='{$_POST['usar_barra']}',  precio_unidad='{$_POST['precio']}',   costo='{$_POST['costo']}',   iscbp='{$_POST['afecto']}',  cantidad='{$_POST['cantidad']}',
              codsunat='{$_POST['codSunat']}' ,razon_social='{$_POST['razon']}',ruc='{$_POST['ruc']}',
-             marca='{$_POST['marca']}',  codigo=?   where id_producto='{$_POST['cod']}'";
+             marca='{$_POST['marca']}',  codigo=?,
+             unidades_por_caja='$unidadesPorCaja', volumen_unidad='$volumenUnidad',
+             id_unidad_derivada=$idUnidadDerivada   where id_producto='{$_POST['cod']}'";
 
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param('ss', $descripcion, $codigoProd);

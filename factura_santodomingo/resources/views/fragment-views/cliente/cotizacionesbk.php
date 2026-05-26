@@ -4,7 +4,7 @@
         <div class="col-md-8">
             <h6 class="page-title">Cotizaciones</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturación</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturacion</a></li>
                 <li class="breadcrumb-item"><a href="/ventas" class="button-link">Cotizaciones</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Productos </li>
             </ol>
@@ -42,7 +42,7 @@
                                 <th>Vendedor</th>
                                 <th>Estado</th>
                                 <th>Vender</th>
-                                <th>Guía Remisión</th>
+                                <th>Guia Remision</th>
                                 <th></th>
                             </tr>
                         </thead>

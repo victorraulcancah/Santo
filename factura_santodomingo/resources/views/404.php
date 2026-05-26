@@ -32,7 +32,7 @@
                                 <div class="col-lg-4 ms-auto">
                                     <div class="ex-page-content">
                                         <h1 class="text-dark display-1 mt-4">404!</h1>
-                                        <h4 class="mb-4">Lo siento, página no encontradaLo siento, página no encontrada</h4>
+                                        <h4 class="mb-4">Lo siento, pagina no encontradaLo siento, pagina no encontrada</h4>
                                         <p class="mb-5"></p>
                                         <a class="btn btn-primary mb-5 waves-effect waves-light" href="<?=URL::to("/")?>">
                                             <i class="mdi mdi-home"></i> Ir al Inicio</a>

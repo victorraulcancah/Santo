@@ -60,33 +60,63 @@
                                                     <label class="col-lg-2 control-label">Stock Actual</label>
                                                     <div class="col-lg-10">
                                                         <div class="row">
-                                                            <div class="row  col-lg-3">
+                                                            <div class="row  col-lg-2">
                                                                 <div class="col-sm-12">
                                                                     <input disabled v-model="producto.stock" class="form-control text-center" type="text" placeholder="0">
                                                                 </div>
                                                             </div>
-                                                            <div class="row  col-lg-4">
-                                                                <label for="example-text-input" class="col-sm-4  control-label">Cantidad</label>
-                                                                <div class="col-sm-8">
+                                                            <div class="row  col-lg-2" v-if="producto.id_unidad_derivada && producto.index === ''">
+                                                                <label class="col-sm-5 control-label" style="font-size:11px;">Present. <span class="text-danger">*</span></label>
+                                                                <div class="col-sm-7">
+                                                                    <select class="form-control" v-model="producto.presentacion"
+                                                                        :class="{'border-danger': !producto.presentacion}">
+                                                                        <option value="">-- Elige --</option>
+                                                                        <option value="unidad">Unidad</option>
+                                                                        <option value="caja">{{producto.unidad_derivada_nombre}} x {{producto.unidades_por_caja}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row  col-lg-2">
+                                                                <label for="example-text-input" class="col-sm-5 control-label" style="font-size:11px;">{{producto.presentacion === 'caja' ? (producto.unidad_derivada_nombre || 'Cajas') : 'Cantidad'}}</label>
+                                                                <div class="col-sm-7">
                                                                     <input @keypress="onlyNumber" required v-model="producto.cantidad" class="form-control text-center" type="text" placeholder="0" id="example-text-input-cnt">
                                                                 </div>
                                                             </div>
-                                                            <div class="row  col-lg-3">
-                                                                <label for="example-text-input" class="col-sm-4 col-form-label">Precio</label>
+                                                            <div class="row  col-lg-2">
+                                                                <label for="example-text-input" class="col-sm-4 col-form-label" style="font-size:11px;">Precio</label>
                                                                 <div class="col-sm-8">
                                                                     <select name="" id="" class="form-control" v-model="producto.precio">
                                                                         <option v-for="(value, key) in precioProductos" :value="value.precio" :key="key">{{ value.precio }}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
-							    <div class="row  col-lg-4">
-                                                                <label for="example-text-input" class="col-sm-4 col-form-label">Serie</label>
+                                                            <div class="row  col-lg-2">
+                                                                <label for="example-text-input" class="col-sm-4 col-form-label" style="font-size:11px;">Serie</label>
                                                                 <div class="col-sm-8">
                                                                     <input v-model="producto.serie" class="form-control text-center" type="text" placeholder="0">
                                                                 </div>
                                                             </div>
-                                                            <div class="col">
-                                                                <button id="submit-a-product" type="submit" class="btn btn-success"><i class="fa fa-check"></i> Agregar
+                                                            <div class="col-lg-2">
+                                                                <button id="submit-a-product" type="submit" class="btn btn-success"
+                                                                    :disabled="puedeAgregarCotiEdt === false"
+                                                                    :title="puedeAgregarCotiEdt === false ? 'Elige presentacion primero' : ''"><i class="fa fa-check"></i> Agregar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" v-if="producto.id_unidad_derivada && !producto.presentacion && producto.index === ''">
+                                                            <div class="col-lg-12 mt-2">
+                                                                <small class="text-danger">
+                                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                                    Este producto se vende por <strong>Unidad</strong> o por <strong>{{producto.unidad_derivada_nombre}} x {{producto.unidades_por_caja}}</strong>. Debes elegir antes de agregar.
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" v-if="producto.presentacion === 'caja' && producto.unidades_por_caja > 1 && producto.cantidad > 0 && producto.index === ''">
+                                                            <div class="col-lg-12 mt-2">
+                                                                <small class="text-success">
+                                                                    <i class="fa fa-info-circle"></i>
+                                                                    Equivale a <strong>{{producto.cantidad * producto.unidades_por_caja}}</strong> unidades base
+                                                                </small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -126,6 +156,7 @@
                                                         <th>Item</th>
                                                         <th>Codigo</th>
                                                         <th>Producto</th>
+                                                        <th>Present.</th>
                                                         <th>Cantidad</th>
                                                         <th>P. Unit.</th>
                                                         <th>Parcial</th>
@@ -139,6 +170,13 @@
                                                         <td>{{index+1}}</td>
                                                         <td>{{item.codigo_pp}}</td>
                                                         <td>{{item.descripcion}}</td>
+                                                        <td>
+                                                            <span v-if="item.cajas_vendidas" class="badge bg-info">
+                                                                {{item.unidad_derivada_nombre || 'Caja'}} x {{item.unidades_por_caja}}
+                                                                <br><small>{{item.cajas_vendidas}} {{item.unidad_derivada_nombre || 'caja'}}(s)</small>
+                                                            </span>
+                                                            <span v-else class="badge bg-secondary">Unidad</span>
+                                                        </td>
                                                         <td><input v-if="item.editable" v-model="item.cantidad">
                                                             <span  v-if="!item.editable">{{item.cantidad}}</span></td>
                                                         <td><input v-if="item.editable" v-model="item.precioVenta">
@@ -324,7 +362,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Dias de pagos</label>
                                         <input placeholder="10,20,30,........" v-model="venta.dias_pago" @keypress="onlyNumberComas" type="text" class="form-control">
-                                        <div class="form-text">Separe por comas los días de pagos</div>
+                                        <div class="form-text">Separe por comas los dias de pagos</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -395,7 +433,12 @@
                     precioVenta: '',
                     precio_usado: 1,
                     index: '',
-		    serie: ''
+		    serie: '',
+                    unidades_por_caja: 1,
+                    volumen_unidad: '',
+                    id_unidad_derivada: null,
+                    unidad_derivada_nombre: '',
+                    presentacion: ''
                 },
                 productos: [],
                 precioProductos: [],
@@ -638,7 +681,7 @@
                             if (this.venta.tipo_pago == 2) {
                                 if (this.venta.dias_lista.length == 0) {
                                     continuar = false;
-                                    mensaje = 'Debe especificar los días de pagos para un cotizacion a crédito';
+                                    mensaje = 'Debe especificar los dias de pagos para un cotizacion a credito';
                                 }
                             }
                         } else if (this.venta.tipo_doc == '2') {
@@ -649,7 +692,7 @@
                             if (this.venta.tipo_pago == 2) {
                                 if (this.venta.dias_lista.length == 0) {
                                     continuar = false;
-                                    mensaje = 'Debe especificar los días de pagos para un cotizacion a crédito';
+                                    mensaje = 'Debe especificar los dias de pagos para un cotizacion a credito';
                                 }
                             }
 
@@ -657,7 +700,7 @@
                         }
 
                         if (continuar) {
-                            //alertInfo("Proceso en construcción")
+                            //alertInfo("Proceso en construccion")
                             /*   console.log(this.usar_precio);
                               return */
                             const data = {
@@ -724,16 +767,40 @@
                         precio_unidad: '',
                         precioVenta: '',
                         precio_usado: 1,
-                        index: ''
+                        index: '',
+                        unidades_por_caja: 1,
+                        volumen_unidad: '',
+                        id_unidad_derivada: null,
+                        unidad_derivada_nombre: '',
+                        presentacion: ''
                     }
                 },
                 addProduct() {
+                    // Validacion: si el producto tiene unidad derivada (en modo nuevo, no edicion), exigir presentacion
+                    if (this.producto.index === '' && this.producto.id_unidad_derivada && !this.producto.presentacion) {
+                        alertAdvertencia("Debes elegir Unidad o " + this.producto.unidad_derivada_nombre + " antes de agregar");
+                        return;
+                    }
                     console.log(this.producto)
                     //if (this.producto.stock)
                     if (this.producto.descripcion.length > 0) {
                         const prod = {
                             editable: false,
                             ...this.producto
+                        }
+
+                        // Regla: si el producto tiene unidad derivada (caja), el precio almacenado
+                        // ES el precio de la CAJA. Para sacar el precio por unidad: dividir / upc.
+                        const upc = parseInt(prod.unidades_por_caja) || 1;
+                        if (prod.id_unidad_derivada && upc > 1 && this.producto.index === '') {
+                            const precioPorCaja = parseFloat(prod.precio) || 0;
+                            prod.precio_caja = precioPorCaja;
+                            prod.precioVenta = (precioPorCaja / upc).toFixed(4);
+                            if (prod.presentacion === 'caja') {
+                                const cajas = parseFloat(prod.cantidad) || 0;
+                                prod.cajas_vendidas = cajas;
+                                prod.cantidad = cajas * upc;
+                            }
                         }
                         if (this.producto.index !== '') {
                             let id = this.producto.index
@@ -769,6 +836,12 @@
                 }
             },
             computed: {
+                puedeAgregarCotiEdt() {
+                    if (!this.producto.descripcion) return false;
+                    // Solo validar presentacion en modo "nuevo producto" (no edicion)
+                    if (this.producto.index === '' && this.producto.id_unidad_derivada && !this.producto.presentacion) return false;
+                    return true;
+                },
                 totalValorListaDias() {
                     var total_ = 0;
                     this.venta.dias_lista.forEach((el) => {
@@ -837,6 +910,11 @@
                 app.producto.precioVenta = parseFloat(ui.item.precio + "").toFixed(2)
                 app.producto.codigo = ui.item.codigo
                 app.producto.costo = ui.item.costo
+                app.producto.unidades_por_caja = parseInt(ui.item.unidades_por_caja) || 1
+                app.producto.volumen_unidad = ui.item.volumen_unidad || ''
+                app.producto.id_unidad_derivada = ui.item.id_unidad_derivada ? parseInt(ui.item.id_unidad_derivada) : null
+                app.producto.unidad_derivada_nombre = ui.item.unidad_derivada_nombre || ''
+                app.producto.presentacion = app.producto.id_unidad_derivada ? '' : 'unidad'
                 let array = [{
                         precio: app.producto.precio
                     },

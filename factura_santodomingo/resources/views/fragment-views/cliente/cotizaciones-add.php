@@ -1,10 +1,10 @@
 <div class="page-title-box">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h6 class="page-title">Cotización</h6>
+            <h6 class="page-title">Cotizacion</h6>
             <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturación</a></li>
-                <li class="breadcrumb-item"><a href="/ventas" class="button-link">Cotización</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Facturacion</a></li>
+                <li class="breadcrumb-item"><a href="/ventas" class="button-link">Cotizacion</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Productos</li>
             </ol>
         </div>
@@ -26,7 +26,7 @@
                 <div class="card-title-desc">
                     <div class="col-lg-12 text-end">
                         <button type="button" onclick="$('#btn_finalizar_pedido').click()" class="btn btn-primary">
-                            <i class="fa fa-plus "></i> Guardar Cotización
+                            <i class="fa fa-plus "></i> Guardar Cotizacion
                         </button>
 
                         <a id="backbuttonvp" style="margin-left:25px;" href="/cotizaciones" class="btn btn-warning button-link"><i class="fa fa-arrow-left"></i> Regresar</a>
@@ -43,7 +43,7 @@
 
                                             <form v-on:submit.prevent="addProduct" class="form-horizontal">
                                                 <div class="form-group row mb-3">
-                                                    <label class="col-lg-2 control-label">Almacén</label>
+                                                    <label class="col-lg-2 control-label">Almacen</label>
                                                     <div class="col-lg-3">
                                                         <select class="form-control" @change="onChangeAlmacen($event)">
                                                             <option v-for="item in listaAlmacenes" :value="item.id">{{item.name}}</option>
@@ -63,9 +63,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label class="col-lg-2 control-label">Descripción</label>
+                                                    <label class="col-lg-2 control-label">Descripcion</label>
                                                     <div class="col-lg-10">
-                                                        <input required v-model="producto.descripcion" type="text" placeholder="Descripción" class="form-control" readonly="true">
+                                                        <input required v-model="producto.descripcion" type="text" placeholder="Descripcion" class="form-control" readonly="true">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row  mb-3">
@@ -73,33 +73,72 @@
                                                     <label class="col-lg-2 control-label">Stock Actual</label>
                                                     <div class="col-lg-10">
                                                         <div class="row">
-                                                            <div class="row  col-lg-3">
+                                                            <div class="row  col-lg-2">
                                                                 <div class="col-sm-12">
                                                                     <input disabled v-model="producto.stock" class="form-control text-center" type="text" placeholder="0">
                                                                 </div>
                                                             </div>
-                                                            <div class="row  col-lg-4">
-                                                                <label for="example-text-input" class="col-sm-4  control-label">Cantidad</label>
-                                                                <div class="col-sm-8">
+                                                            <div class="row  col-lg-2" v-if="producto.id_unidad_derivada">
+                                                                <label class="col-sm-5 control-label" style="font-size:11px;">Present. <span class="text-danger">*</span></label>
+                                                                <div class="col-sm-7">
+                                                                    <select class="form-control" v-model="producto.presentacion"
+                                                                        :class="{'border-danger': !producto.presentacion}">
+                                                                        <option value="">-- Elige --</option>
+                                                                        <option value="unidad">Unidad</option>
+                                                                        <option value="caja">{{producto.unidad_derivada_nombre}} x {{producto.unidades_por_caja}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row  col-lg-2">
+                                                                <label for="example-text-input" class="col-sm-5 control-label" style="font-size:11px;">{{producto.presentacion === 'caja' ? (producto.unidad_derivada_nombre || 'Cajas') : 'Cantidad'}}</label>
+                                                                <div class="col-sm-7">
                                                                     <input @keypress="onlyNumber" required v-model="producto.cantidad" class="form-control text-center" type="text" placeholder="0" id="example-text-input">
                                                                 </div>
                                                             </div>
-                                                            <div class="row  col-lg-3">
-                                                                <label for="example-text-input" class="col-sm-4 col-form-label">Precio</label>
+                                                            <div class="row  col-lg-2">
+                                                                <label for="example-text-input" class="col-sm-4 col-form-label" style="font-size:11px;">Precio</label>
                                                                 <div class="col-sm-8">
                                                                     <select name="" id="" class="form-control" v-model="producto.precio">
                                                                         <option v-for="(value, key) in precioProductos" :value="value.precio" :key="key">{{ value.precio }}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="row  col-lg-4">
-                                                                <label for="example-text-input" class="col-sm-4 col-form-label">Serie</label>
+                                                            <div class="row  col-lg-2">
+                                                                <label for="example-text-input" class="col-sm-4 col-form-label" style="font-size:11px;">Serie</label>
                                                                 <div class="col-sm-8">
                                                                     <input v-model="producto.serie" class="form-control text-center" type="text" placeholder="0">
                                                                 </div>
                                                             </div>
-                                                            <div class="col">
-                                                                <button id="submit-a-product" type="submit" class="btn btn-success"><i class="fa fa-check"></i> Agregar
+                                                            <div class="col-lg-2">
+                                                                <button id="submit-a-product" type="submit" class="btn btn-success"
+                                                                    :disabled="puedeAgregarCoti === false"
+                                                                    :title="puedeAgregarCoti === false ? 'Elige presentacion primero' : ''"><i class="fa fa-check"></i> Agregar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" v-if="producto.id_unidad_derivada && !producto.presentacion">
+                                                            <div class="col-lg-12 mt-2">
+                                                                <small class="text-danger">
+                                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                                    Este producto se vende por <strong>Unidad</strong> o por <strong>{{producto.unidad_derivada_nombre}} x {{producto.unidades_por_caja}}</strong>. Debes elegir antes de agregar.
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" v-if="producto.id_unidad_derivada && producto.unidades_por_caja > 1 && producto.precio > 0">
+                                                            <div class="col-lg-12 mt-2">
+                                                                <small class="text-success" v-if="producto.presentacion === 'caja' && producto.cantidad > 0">
+                                                                    <i class="fa fa-info-circle"></i>
+                                                                    Precio por <strong>{{producto.unidad_derivada_nombre}}</strong>: <strong>{{producto.precio}}</strong>
+                                                                    → Precio por unidad: <strong>{{(producto.precio / producto.unidades_por_caja).toFixed(4)}}</strong>
+                                                                    → Cantidad en stock base: <strong>{{producto.cantidad * producto.unidades_por_caja}}</strong> unid.
+                                                                    | Total: <strong>{{(producto.precio * producto.cantidad).toFixed(2)}}</strong>
+                                                                </small>
+                                                                <small class="text-success" v-else-if="producto.presentacion === 'unidad' && producto.cantidad > 0">
+                                                                    <i class="fa fa-info-circle"></i>
+                                                                    Precio por <strong>{{producto.unidad_derivada_nombre}}</strong>: <strong>{{producto.precio}}</strong>
+                                                                    → Precio por unidad: <strong>{{(producto.precio / producto.unidades_por_caja).toFixed(4)}}</strong>
+                                                                    | Total: <strong>{{((producto.precio / producto.unidades_por_caja) * producto.cantidad).toFixed(2)}}</strong>
+                                                                </small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -133,6 +172,7 @@
                                                         <th>Item</th>
                                                         <th>Codigo</th>
                                                         <th>Producto</th>
+                                                        <th>Present.</th>
                                                         <th>Cantidad</th>
                                                         <th>P. Unit.</th>
                                                         <th>Parcial</th>
@@ -144,7 +184,16 @@
                                                     <tr v-for="(item,index) in productos">
                                                         <td>{{index+1}}</td>
                                                         <td>{{item.codigo_prod}}</td>
-                                                        <td>{{item.descripcion}}</td>
+                                                        <td>
+                                                            {{item.descripcion}}
+                                                        </td>
+                                                        <td>
+                                                            <span v-if="item.cajas_vendidas" class="badge bg-info">
+                                                                {{item.unidad_derivada_nombre || 'Caja'}} x {{item.unidades_por_caja}}
+                                                                <br><small>{{item.cajas_vendidas}} {{item.unidad_derivada_nombre || 'caja'}}(s)</small>
+                                                            </span>
+                                                            <span v-else class="badge bg-secondary">Unidad</span>
+                                                        </td>
                                                         <td><input v-if="item.editable" v-model="item.cantidad">
                                                             <span v-if="!item.editable">{{item.cantidad}}</span>
                                                         </td>
@@ -195,7 +244,7 @@
                                                             <label class="control-label">Tipo Pago</label>
                                                             <select v-model="venta.tipo_pago" @change="changeTipoPago" class="form-control">
                                                                 <option value="1">Contado</option>
-                                                                <option value="2">Crédito</option>
+                                                                <option value="2">Credito</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -206,7 +255,7 @@
                                                                 <input v-model="venta.serie" type="text" class="form-control text-center" readonly="">
                                                             </div>
                                                             <div class="col-lg-6">
-                                                                <label class="text-center col-md-12">Número</label>
+                                                                <label class="text-center col-md-12">Numero</label>
                                                                 <input v-model="venta.numero" type="text" class="form-control text-center" readonly="">
                                                             </div>
                                                         </div>
@@ -235,7 +284,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-if="venta.tipo_pago=='2'" class="form-group ">
-                                                        <label class="control-label">Días de pago</label>
+                                                        <label class="control-label">Dias de pago</label>
                                                         <div class="col-lg-12">
                                                             <input @focus="focusDiasPagos" v-model="venta.dias_pago" type="text" class="form-control text-center">
                                                         </div>
@@ -339,13 +388,13 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title" id="exampleModalLabel">Días de Pagos</h3>
+                                    <h3 class="modal-title" id="exampleModalLabel">Dias de Pagos</h3>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="">
-                                                <label class="form-label">Fecha Emisión</label>
+                                                <label class="form-label">Fecha Emision</label>
                                                 <input v-model="venta.fecha" disabled type="date" class="form-control">
                                             </div>
                                         </div>
@@ -357,9 +406,9 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Días de pagos</label>
+                                        <label class="form-label">Dias de pagos</label>
                                         <input placeholder="10,20,30,........" v-model="venta.dias_pago" @keypress="onlyNumberComas" type="text" class="form-control">
-                                        <div class="form-text">Separar por comas los días de pagos</div>
+                                        <div class="form-text">Separar por comas los dias de pagos</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -486,7 +535,12 @@
                     precio_unidad: '',
                     precioVenta: '',
                     precio_usado: 1,
-                    serie: ''
+                    serie: '',
+                    unidades_por_caja: 1,
+                    volumen_unidad: '',
+                    id_unidad_derivada: null,
+                    unidad_derivada_nombre: '',
+                    presentacion: ''
                 },
                 productos: [],
                 precioProductos: [],
@@ -730,7 +784,7 @@
                             if (this.venta.tipo_pago == 2) {
                                 if (this.venta.dias_lista.length == 0) {
                                     continuar = false;
-                                    mensaje = 'Debe especificar los días de pagos para un cotizacion a crédito';
+                                    mensaje = 'Debe especificar los dias de pagos para un cotizacion a credito';
                                 }
                             }
                         } else if (this.venta.tipo_doc == '2') {
@@ -741,7 +795,7 @@
                             if (this.venta.tipo_pago == 2) {
                                 if (this.venta.dias_lista.length == 0) {
                                     continuar = false;
-                                    mensaje = 'Debe especificar los días de pagos para un cotizacion a crédito';
+                                    mensaje = 'Debe especificar los dias de pagos para un cotizacion a credito';
                                 }
                             }
 
@@ -749,7 +803,7 @@
                         }
 
                         if (continuar) {
-                            //alertInfo("Proceso en construcción")
+                            //alertInfo("Proceso en construccion")
                             const data = {
                                 ...this.venta,
                                 usar_precio: this.usar_precio,
@@ -812,15 +866,41 @@
                         precio4: '',
                         precio_unidad: '',
                         precioVenta: '',
-                        precio_usado: 1
+                        precio_usado: 1,
+                        unidades_por_caja: 1,
+                        volumen_unidad: '',
+                        id_unidad_derivada: null,
+                        unidad_derivada_nombre: '',
+                        presentacion: ''
                     }
                 },
                 addProduct() {
+                    // Validacion: si el producto tiene unidad derivada, exigir presentacion
+                    if (this.producto.id_unidad_derivada && !this.producto.presentacion) {
+                        alertAdvertencia("Debes elegir Unidad o " + this.producto.unidad_derivada_nombre + " antes de agregar");
+                        return;
+                    }
                     //if (this.producto.stock)
                     if (this.producto.descripcion.length > 0) {
                         const prod = {
                             ...this.producto
                         }
+
+                        // Regla: si el producto tiene unidad derivada (caja), el precio del producto
+                        // ES el precio de la CAJA completa. Para sacar el precio por unidad: dividir / upc.
+                        const upc = parseInt(prod.unidades_por_caja) || 1;
+                        if (prod.id_unidad_derivada && upc > 1) {
+                            const precioPorCaja = parseFloat(prod.precio) || 0;
+                            prod.precio_caja = precioPorCaja;
+                            prod.precioVenta = (precioPorCaja / upc).toFixed(4);  // siempre precio por unidad
+                            if (prod.presentacion === 'caja') {
+                                const cajas = parseFloat(prod.cantidad) || 0;
+                                prod.cajas_vendidas = cajas;
+                                prod.cantidad = cajas * upc;  // stock en unidades base
+                            }
+                            // En modo 'unidad': cantidad queda como esta, precioVenta ya esta dividido
+                        }
+
                         this.productos.push(prod)
                         this.limpiasDatos();
                     } else {
@@ -835,6 +915,11 @@
                 }
             },
             computed: {
+                puedeAgregarCoti() {
+                    if (!this.producto.descripcion) return false;
+                    if (this.producto.id_unidad_derivada && !this.producto.presentacion) return false;
+                    return true;
+                },
 
                 monedaSibol() {
                     return (this.venta.moneda == 1 ? 'S/' : '$')
@@ -916,6 +1001,11 @@
                 app.producto.codigo = ui.item.codigo
                 app.producto.codigo_prod = ui.item.codigo_pp
                 app.producto.costo = ui.item.costo
+                app.producto.unidades_por_caja = parseInt(ui.item.unidades_por_caja) || 1
+                app.producto.volumen_unidad = ui.item.volumen_unidad || ''
+                app.producto.id_unidad_derivada = ui.item.id_unidad_derivada ? parseInt(ui.item.id_unidad_derivada) : null
+                app.producto.unidad_derivada_nombre = ui.item.unidad_derivada_nombre || ''
+                app.producto.presentacion = app.producto.id_unidad_derivada ? '' : 'unidad'
                 let array = [{
                         precio: app.producto.precio
                     },

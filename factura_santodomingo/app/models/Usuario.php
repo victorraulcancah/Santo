@@ -210,6 +210,11 @@ class Usuario
                         'ruc_empr'=>$empr['ruc'],
 			      'sistema_id' => $sistema_id,  // Nuevo campo
 	                  'timestamp' => time(),         // Nuevo campo
+                        'tipo_sueldo' => $row['tipo_sueldo'],
+                        'monto_sueldo_fijo' => $row['monto_sueldo_fijo'],
+                        'porcentaje_sueldo_comision' => $row['porcentaje_sueldo_comision'],
+                        'meta_ventas' => $row['meta_ventas'],
+                        'porcentaje_comision_meta' => $row['porcentaje_comision_meta']
                     ];
 
                      $token_plano = json_encode($token_u);
